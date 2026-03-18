@@ -15,6 +15,16 @@
       "source": "./plugins/agentherder",
       "category": "productivity",
       "homepage": "https://agentherder.com"
+    },
+    {
+      "name": "browser-automation",
+      "description": "Browser automation for Claude Code. Persistent Chrome profile, CDP connection.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/browser-automation",
+      "category": "productivity",
+      "homepage": "https://github.com/generativereality/browser-automation"
     }
   ]
 }
