@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "plugins",
+  "name": "generativereality",
   "description": "Claude Code plugins by generativereality",
   "owner": {
     "name": "generativereality"
