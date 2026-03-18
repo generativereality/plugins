@@ -1,0 +1,16 @@
+{
+  "name": "browser-automation",
+  "description": "Browser automation for Claude Code. Launches Chrome with a persistent profile and connects via CDP for full browser control.",
+  "version": "0.1.0",
+  "author": {
+    "name": "generativereality"
+  },
+  "skills": [
+    {
+      "name": "browser",
+      "path": "skills/browser/SKILL.md"
+    }
+  ],
+  "repository": "https://github.com/generativereality/browser-automation",
+  "license": "MIT"
+}

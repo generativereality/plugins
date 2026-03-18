@@ -13,4 +13,4 @@ Claude Code plugin marketplace for [generativereality](https://github.com/genera
 | Plugin | Description | Install |
 |--------|-------------|---------|
 | [agentherder](https://agentherder.com) | Run a fleet of Claude Code sessions. Terminal tabs as the UI, no tmux. | `/plugin install agentherder@plugins` |
-| [playwright-browser](https://github.com/generativereality/playwright-browser) | Browser automation via Playwright MCP. Persistent Chrome profile, CDP connection. | `/plugin install playwright-browser@plugins` |
+| [browser-automation](https://github.com/generativereality/browser-automation) | Browser automation for Claude Code. Persistent Chrome profile, CDP connection. | `/plugin install browser-automation@plugins` |
