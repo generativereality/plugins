@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "plugins",
+  "description": "Claude Code plugins by generativereality",
+  "owner": {
+    "name": "generativereality"
+  },
+  "plugins": [
+    {
+      "name": "agentherder",
+      "description": "Run a fleet of Claude Code sessions. Terminal tabs as the UI, no tmux. Claude can orchestrate its own sibling sessions.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/agentherder",
+      "category": "productivity",
+      "homepage": "https://agentherder.com"
+    }
+  ]
+}
