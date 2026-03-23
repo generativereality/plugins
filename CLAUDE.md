@@ -11,8 +11,8 @@ The version here must match the npm package version — Claude Code uses this to
 ## Release flow for agentherder (and other plugins)
 
 1. Bump version and publish the npm package in the plugin's own repo (`generativereality/agentherder`)
-2. Update the version in `plugins/<name>/.claude-plugin/plugin.json` here to match
-3. Commit and push this repo
-4. Users update via Claude Code:
+   - Skills and `.claude-plugin/plugin.json` are bundled in the npm package — no need to duplicate them here
+2. Update the version in `plugins/<name>/.claude-plugin/plugin.json` here to match, commit and push
+3. Users update via Claude Code:
    - `/plugins` → Marketplaces → Update generativereality marketplace
    - Then update the individual plugin from the plugins list
