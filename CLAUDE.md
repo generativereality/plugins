@@ -1,18 +1,15 @@
 # generativereality/plugins
 
-Claude Code plugin marketplace. Each directory under `plugins/` is a registered plugin.
+Claude Code plugin marketplace. Plugins are registered in `.claude-plugin/marketplace.json`.
 
-## Adding or updating a plugin
+## How it works
 
-Each plugin entry only needs a `.claude-plugin/plugin.json` with `name`, `version`, `description`, `author`, and `homepage`.
+Plugins use the **npm source type** — `marketplace.json` points to npm packages. Skills, plugin manifests, and versions are all read from the npm package. No plugin files are stored in this repo.
 
-The version here must match the npm package version — Claude Code uses this to detect available updates.
-
-## Release flow for agentherder (and other plugins)
+## Release flow for agentherder (and other npm-sourced plugins)
 
 1. Bump version and publish the npm package in the plugin's own repo (`generativereality/agentherder`)
-   - Skills and `.claude-plugin/plugin.json` are bundled in the npm package — no need to duplicate them here
-2. Update the version in `plugins/<name>/.claude-plugin/plugin.json` here to match, commit and push
+2. That's it — the marketplace auto-resolves the latest version from npm
 3. Users update via Claude Code:
    - `/plugins` → Marketplaces → Update generativereality marketplace
    - Then update the individual plugin from the plugins list
