@@ -12,7 +12,11 @@
       "author": {
         "name": "generativereality"
       },
-      "source": "./plugins/agentherder",
+      "source": {
+        "source": "npm",
+        "package": "@generativereality/agentherder",
+        "registry": "https://registry.npmjs.org"
+      },
       "category": "productivity",
       "homepage": "https://agentherder.com"
     },
