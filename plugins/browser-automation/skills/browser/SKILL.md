@@ -119,7 +119,7 @@ Use `browser_evaluate` to find and click by attribute rather than waiting for sn
 // browser_evaluate
 () => {
   const btn = Array.from(document.querySelectorAll('button'))
-    .find(b => b.getAttribute('aria-label')?.includes('cctabs.com'));
+    .find(b => b.getAttribute('aria-label')?.includes('example.com'));
   if (btn) { btn.click(); return 'clicked'; }
   return 'not found';
 }
