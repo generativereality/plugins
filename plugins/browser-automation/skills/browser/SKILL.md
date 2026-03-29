@@ -64,10 +64,73 @@ Once Chrome is running, these Playwright MCP tools are available:
 4. Interact using `browser_click`, `browser_type`, etc. using refs from the snapshot
 5. Take new snapshots after interactions to verify state changes
 
+## Working with Heavy UIs (Porkbun, Cloudflare, etc.)
+
+Some web apps have very large DOMs that cause snapshot timeouts, cookie banners that block clicks, and CSRF tokens that expire between interactions.
+
+### Cookie banners blocking clicks
+
+Remove them via JS before clicking:
+```js
+// browser_evaluate
+() => { document.querySelector('[role="dialog"]').remove(); }
+```
+
+### CSRF / "Security Error" on form submit
+
+If a site's built-in submit function (e.g. `nsDrawerSubmit()`) silently fails or returns a security error, bypass the UI and call the API directly using the page's jQuery (which auto-includes CSRF cookies):
+
+```js
+// browser_evaluate — Porkbun nameserver update example
+() => {
+  return new Promise((resolve) => {
+    $.post('/api/domains/updateDomainNameservers', {
+      domain: 'example.com',
+      nameservers: 'ns1.cloudflare.com\nns2.cloudflare.com',
+      confirmed: '',
+      leaveDnssec: ''
+    }, function(data) {
+      resolve('result: ' + JSON.stringify(data));
+    }).fail(function(xhr) {
+      resolve('fail: ' + xhr.status);
+    });
+  });
+}
+```
+
+To find the correct API endpoint, inspect the site's submit function:
+```js
+// browser_evaluate
+() => { return window.someSubmitFunction.toString().substring(0, 1000); }
+```
+
+### Large DOMs causing snapshot timeouts
+
+Use `browser_evaluate` instead of `browser_snapshot` to extract specific data:
+```js
+// browser_evaluate
+() => { const ta = document.querySelector('textarea'); return ta ? ta.value : 'not found'; }
+```
+
+### Finding and clicking buttons in large DOMs
+
+Use `browser_evaluate` to find and click by attribute rather than waiting for snapshot refs:
+```js
+// browser_evaluate
+() => {
+  const btn = Array.from(document.querySelectorAll('button'))
+    .find(b => b.getAttribute('aria-label')?.includes('cctabs.com'));
+  if (btn) { btn.click(); return 'clicked'; }
+  return 'not found';
+}
+```
+
 ## Notes
 
 - The `browser-automation` profile is separate from your normal Chrome profile — no conflicts
 - Logins persist between sessions, so you only need to authenticate once per site
-- For pages with very large or complex DOMs, prefer `browser_run_code` over `browser_snapshot`
+- For pages with very large or complex DOMs, prefer `browser_evaluate` over `browser_snapshot`
 - Some pages load slowly — wait a few seconds after navigation before taking snapshots
 - CAPTCHA challenges may appear as empty snapshots — retry or navigate directly
+- When `browser_snapshot` returns empty or times out, use `browser_evaluate` to inspect the page
+- Always verify side effects (e.g. `dig NS domain @8.8.8.8`) rather than trusting UI feedback
