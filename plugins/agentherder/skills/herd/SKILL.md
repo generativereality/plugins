@@ -1,9 +1,11 @@
 ---
 name: herd
-description: Manage Claude Code sessions across terminal tabs — list running sessions, open new ones, fork, close, inspect output, and send input. Use this when working with multiple parallel Claude Code sessions.
+description: Manage Claude Code sessions across terminal tabs (NOT browser tabs) — list running sessions, open new ones, fork, close, inspect output, and send input. Use this when working with multiple parallel Claude Code sessions in terminal tabs.
 ---
 
 You are managing Claude Code sessions using the `herd` CLI (Agent Herder).
+
+**Important:** "tabs" here means **terminal tabs** (e.g. Wave Terminal tabs), NOT browser tabs. Each terminal tab runs its own Claude Code session. This skill is for managing those terminal-based Claude Code sessions — not for browser automation.
 
 ## First: Ensure herd is available
 
@@ -11,13 +13,19 @@ You are managing Claude Code sessions using the `herd` CLI (Agent Herder).
 which herd || ls "$(npm prefix -g)/bin/herd" 2>/dev/null
 ```
 
-Use whichever path is found. If `herd` is on PATH, use it directly. Otherwise use the full path from `npm prefix -g`.
+If found, use whichever path works. If `herd` is on PATH, use it directly. Otherwise use the full path from `npm prefix -g`.
 
-Do NOT attempt to install herd globally, modify PATH, add npm dependencies, or fix npm configuration.
+If not found, ask the user: "herd isn't installed yet — want me to install it globally with npm?" If they agree, run:
+
+```bash
+npm install -g @generativereality/agentherder
+```
+
+Do not modify PATH or npm configuration beyond this.
 
 ---
 
-Each session runs in its own terminal tab. `herd` lets you — and other Claude Code sessions — introspect and orchestrate the full session fleet.
+Each Claude Code session runs in its own **terminal tab**. `herd` lets you — and other Claude Code sessions — introspect and orchestrate the full session fleet.
 
 ## Quick Reference
 
