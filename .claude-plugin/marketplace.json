@@ -7,14 +7,14 @@
   },
   "plugins": [
     {
-      "name": "agentherder",
-      "description": "Run a fleet of Claude Code sessions. Terminal tabs as the UI, no tmux. Claude can orchestrate its own sibling sessions.",
+      "name": "cctabs",
+      "description": "Claude Code tab manager. Terminal tabs as the UI, no tmux. Claude can orchestrate its own sibling sessions.",
       "author": {
         "name": "generativereality"
       },
-      "source": "./plugins/agentherder",
+      "source": "./plugins/cctabs",
       "category": "productivity",
-      "homepage": "https://agentherder.com"
+      "homepage": "https://cctabs.com"
     },
     {
       "name": "browser-automation",

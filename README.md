@@ -12,5 +12,5 @@ Claude Code plugin marketplace for [generativereality](https://github.com/genera
 
 | Plugin | Description | Install |
 |--------|-------------|---------|
-| [agentherder](https://agentherder.com) | Run a fleet of Claude Code sessions. Terminal tabs as the UI, no tmux. | `/plugin install agentherder@plugins` |
+| [cctabs](https://cctabs.com) | Claude Code tab manager. Terminal tabs as the UI, no tmux. | `/plugin install cctabs@generativereality` |
 | [browser-automation](https://github.com/generativereality/browser-automation) | Browser automation for Claude Code. Persistent Chrome profile, CDP connection. | `/plugin install browser-automation@plugins` |
