@@ -18,7 +18,7 @@ If found, use whichever path works. If `cctabs` is on PATH, use it directly. Oth
 If not found, ask the user: "cctabs isn't installed yet — want me to install it globally with npm?" If they agree, run:
 
 ```bash
-npm install -g cctabs
+npm install -g @generativereality/cctabs
 ```
 
 Do not modify PATH or npm configuration beyond this.
