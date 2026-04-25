@@ -7,6 +7,20 @@ You are managing Claude Code sessions using the `cctabs` CLI.
 
 **Important:** "tabs" here means **terminal tabs** (e.g. Wave Terminal tabs), NOT browser tabs. Each terminal tab runs its own Claude Code session. This skill is for managing those terminal-based Claude Code sessions — not for browser automation.
 
+## Before you spawn anything: is cctabs the right tool?
+
+cctabs is excellent for:
+- **Multiple human-driven sessions** on unrelated projects (check on a deploy here, draft a blog post there, monitor a long-running task somewhere else).
+- **Genuinely orthogonal parallel work** where each tab touches a disjoint file set (e.g. each tab writes to its own new directory, or each tab works on a different repo).
+- **Long-running background sessions** that the user wants to check on later (builds, scrapes, benchmarks).
+
+cctabs is the WRONG tool for:
+- **Interconnected parallel work within one session.** If you're orchestrating and farming out subtasks that all modify the same evolving codebase, tabs hide each other's commits from each other. By the time they're done, you have three diverged branches that need manual merge, and any intervening change on `main`/`next` can make the merge structurally painful. **Use the Agent tool instead** — subagents share your filesystem and git state, commit in place, and surface their result back to you.
+- **Sequential dependencies.** If B depends on A's commits landing, don't parallelize — run A to completion first, then B.
+- **Work that touches the same files as the current orchestrator session.** Commits race, branches diverge, conflicts multiply.
+
+A good test: *"If both tabs finish successfully, will merging their output be trivial?"* If yes, cctabs is fine. If no (or you can't tell), do it sequentially or use subagents.
+
 ## First: Ensure cctabs is available
 
 ```bash
@@ -26,6 +40,29 @@ Do not modify PATH or npm configuration beyond this.
 ---
 
 Each Claude Code session runs in its own **terminal tab**. `cctabs` lets you — and other Claude Code sessions — introspect and orchestrate the full session fleet.
+
+## When to Use Worktrees
+
+**Use `--worktree` whenever a tab will edit code on a branch that differs from the main working tree.** This includes:
+- Fixing CI on a PR (`cctabs new fix-1789 ~/Dev/myapp --worktree`)
+- Working on a feature branch while the main checkout runs a dev server
+- Any task where multiple tabs might checkout different branches
+
+Without `--worktree`, all tabs share the same working directory. If two tabs checkout different branches, they stomp on each other's files — causing silent conflicts, lost changes, and broken dev servers.
+
+**Rule of thumb:**
+- **Read-only / docs / coordination** → no worktree needed (stays on current branch)
+- **Editing code on a different branch** → always `--worktree`
+
+```bash
+# ❌ WRONG — two tabs checking out different branches in the same directory
+cctabs new fix-auth ~/Dev/myapp --prompt "checkout PR #101 and fix lint"
+cctabs new fix-api ~/Dev/myapp --prompt "checkout PR #102 and fix tests"
+
+# ✅ RIGHT — each gets its own isolated copy
+cctabs new fix-auth ~/Dev/myapp --worktree --prompt "checkout PR #101 and fix lint"
+cctabs new fix-api ~/Dev/myapp --worktree --prompt "checkout PR #102 and fix tests"
+```
 
 ## Quick Reference
 
@@ -104,7 +141,9 @@ The forked session shares full conversation history up to the fork point, then d
 
 ## Workflow: Spawning a Parallel Agent
 
-As a Claude Code session, you can spawn a sibling session to work on a parallel task:
+**Before spawning, re-read "is cctabs the right tool?" above.** If the task is interconnected with your current work, use the Agent tool (subagents) instead — they share your filesystem and commits.
+
+As a Claude Code session, you can spawn a sibling session for a **genuinely independent** parallel task:
 
 **Preferred: pass the initial task directly to `cctabs new`** using `--prompt` or `--file`. This polls internally until Claude's `❯` prompt appears before sending — no race condition:
 
@@ -124,6 +163,25 @@ cctabs send payments "yes\n"   # quick replies
 ```
 
 **Do NOT call `cctabs send` immediately after `cctabs new`** — Claude is still starting up and the text will land as raw shell commands.
+
+### Spawning gotchas (hard-won)
+
+1. **Verify the worktree base immediately after spawn.** `--worktree` does not always branch from your current HEAD — if you have local un-pushed commits, the child session may branch from an older commit (whatever the remote tracking branch points at). Always check:
+   ```bash
+   cctabs new kid ~/Dev/myapp --worktree -p "..."
+   # Then in the ORCHESTRATOR tab:
+   git -C ~/Dev/myapp/.claude/worktrees/kid log --oneline -1
+   ```
+   If the base is not what you expected, abort and fix: either push your commits to the tracking branch first, or spawn without `--worktree` and let the subagent work on your branch directly.
+
+2. **Never instruct a subagent to "rebase your branch on main/next."** Subagents interpret this liberally. A common failure mode: the subagent does `git reset --hard <remote>` and throws away its own completed commits, trying to redo the work from scratch. Instead:
+   - Have the orchestrator handle rebases after the subagent is done.
+   - Or send a precise patch/diff rather than a verbal rebase instruction.
+   - Or tell the subagent explicitly: *"do not rebase, do not reset; make fixup commits on top of your existing branch."*
+
+3. **Subagents won't see each other's commits.** Each tab has its own working tree. If ws-A commits a schema, ws-B cannot consume it until you merge A → main → rebase B. This is a fundamental property, not a bug. Only parallelize when this limitation doesn't matter.
+
+4. **Don't delegate rebases or merges to subagents.** Those are orchestrator work. Subagents produce content; orchestrator integrates.
 
 ## Workflow: Monitoring Another Session
 
@@ -176,10 +234,36 @@ cctabs new feature ~/Dev/myapp --worktree
 
 **Why:** Manually created worktree dirs placed outside the repo confuse Claude Code's session tracking, project memory lookup (`.claude/` is in the main repo), and CLAUDE.md resolution. Claude Code's built-in worktree support keeps everything co-located under `.claude/worktrees/` and handles cleanup on session exit.
 
+**Worktree base-commit caveat:** after spawning with `--worktree`, verify the branch base matches your expectation (see "Spawning gotchas" above). If your orchestrator has local commits that haven't been pushed, the worktree may branch from the stale remote tip instead of HEAD. This bites hardest when parallel tabs need to share schema/types your orchestrator has been working on — they won't see those changes if they branched before the commits landed upstream.
+
+## Handling `cctabs new` Timeout Errors
+
+`cctabs new` may occasionally fail with "Timed out waiting for new terminal block". This does **NOT** mean you have too many tabs or that Wave Terminal has hit a limit.
+
+**Possible causes** (root cause not yet confirmed):
+- Wave Terminal may need to be in focus / foreground for tab creation to register
+- The internal timeout may be slightly too short for the current system load
+- Transient IPC timing issue between cctabs and Wave
+
+**What to do:**
+1. **Retry the same command** — it often works on the second attempt
+2. If it fails again, wait a few seconds and retry once more
+3. If it keeps failing, ask the user to bring Wave Terminal to the foreground and try again
+
+**What NOT to do:**
+- ❌ Do NOT assume there is a "tab limit" — there isn't one
+- ❌ Do NOT close other tabs to "make room" — this destroys the user's sessions
+- ❌ Do NOT suggest the user has too many tabs open
+
 ## Workflow: Cleanup
 
+**⚠️ NEVER close tabs without explicit user approval.** Each tab may contain an active session with important context, uncommitted work, or in-progress tasks. Closing a tab is destructive and irreversible.
+
+**Always ask first:**
+> "These tabs look idle: `old-feature`, `fix-1234`. Want me to close any of them?"
+
+Only after the user confirms:
 ```bash
-cctabs sessions                        # find idle/terminal tabs
 cctabs close old-feature               # close by name (prefix match)
 cctabs close e5f6a7b8                  # close by block ID prefix
 ```
@@ -200,3 +284,14 @@ Name tabs after the **project or task**:
 - `cctabs new` and `cctabs resume` automatically pass `--name <tab-name>` to claude, syncing the session display name with the tab title
 - Configured `claude.flags` in `~/.config/cctabs/config.toml` are applied to every session
 - `cctabs send` resolves tab names to their terminal block automatically
+
+## Lesson: the common failure mode
+
+A pattern that wastes the most tokens: an orchestrator spawns three tabs for "parallel workstreams" on the same feature, each tab diverges from the base and from each other, the orchestrator loses visibility into what each is doing, one tab misinterprets a course-correct and resets its own work, and finally the orchestrator spends hours hand-merging commits that don't apply cleanly against an intervening refactor.
+
+The fix is upstream: before spawning, ask *"are these workstreams actually independent?"* If the answer is "mostly, but they share a common data model / schema / utility module" — they are **not** independent for cctabs purposes. Either:
+- Do them sequentially in one tab (cheapest).
+- Use the Agent tool for subtasks that share orchestrator state.
+- Land the shared pieces first on `main`/`next`, push, then spawn tabs (each branches cleanly off the new tip and work is truly orthogonal from there).
+
+Parallel tabs earn their keep when the work is genuinely orthogonal (separate repos, separate brand-new directories, independent features) and when you'd otherwise be idle waiting for one long-running task to finish.
