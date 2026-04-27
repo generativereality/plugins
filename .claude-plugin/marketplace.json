@@ -25,6 +25,16 @@
       "source": "./plugins/browser-automation",
       "category": "productivity",
       "homepage": "https://github.com/generativereality/browser-automation"
+    },
+    {
+      "name": "mytranscriber",
+      "description": "Local audio/video transcription via My Transcriber CLI. High-quality Whisper transcription on-device — no cloud. Requires the My Transcriber app installed.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/mytranscriber",
+      "category": "productivity",
+      "homepage": "https://mytranscriber.app"
     }
   ]
 }
