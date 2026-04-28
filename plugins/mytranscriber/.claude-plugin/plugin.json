@@ -1,7 +1,7 @@
 {
   "name": "mytranscriber",
   "description": "Local audio/video transcription via My Transcriber CLI. High-quality Whisper transcription on-device — no cloud. Requires the My Transcriber app installed.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "generativereality",
     "url": "https://mytranscriber.app"

@@ -31,6 +31,25 @@ If none are found, stop and tell the user:
 
 Do not attempt to install it automatically. The user installs the app, then re-asks.
 
+## Privacy gate (read before transcribing anything)
+
+**Always echo the resolved file path(s) and wait for explicit user ack before invoking the daemon.** This applies to every invocation — single file, batch, "transcribe everything", "do my latest", anything. No exceptions for "obvious" cases.
+
+**Why:** Voice Memos, Downloads, and Desktop commonly contain therapy notes, family arguments, medical or legal conversations the user did not intend to feed to an LLM. A user saying *"transcribe my latest"* or *"transcribe everything from today"* is **not** consent for any specific file — they may not remember what's currently in the queue. Burning that trust once is one time too many.
+
+**Anti-pattern (do not do this):**
+
+> User: *"transcribe everything from this morning"*
+> Agent: *runs find, picks 5 files, transcribes all 5 without echoing paths first* ❌
+
+**Correct pattern:**
+
+> User: *"transcribe everything from this morning"*
+> Agent: *lists the 5 files with full paths and mtimes, asks "transcribe all of these?"*
+> User: *"yes"* ✅
+
+If a request is bulk-flavored ("everything", "all of them", "the latest batch"), the gate gets **stronger**, not weaker — show every file path and require an explicit yes. Do not partition the list and proceed on the "obvious" subset.
+
 ## Quality policy
 
 **Prefer the original recording over any auto-generated transcript.** Teams/Zoom/Meet auto-captions (WEBVTT) are noticeably worse than local Whisper: garbled words, attribution drift, dropped phrases. If the user has the source `.mp4`/`.m4a`/`.mp3`, transcribe that — don't fall back to platform captions unless the recording is genuinely unavailable.
@@ -97,9 +116,19 @@ find "${candidates[@]}" -type f \
   | sort -rn | head -5
 ```
 
-Show the top 5 to the user, ask which one (or default to the most recent), then transcribe.
+Show the top 5 to the user with full paths and mtimes. Ask which one(s) to transcribe. **Do not pick a default** — even if the top result is obviously today's recording, echo it and wait for ack. See "Privacy gate" above; that rule overrides any apparent shortcut here.
 
-**Do not silently transcribe** — Voice Memos and Downloads can contain personal recordings the user didn't intend to process.
+### Voice Memos iCloud sync gotcha (macOS)
+
+Voice memos recorded on an iPhone with iCloud sync **do not appear in the macOS shared container until the user has launched the Voice Memos.app on the Mac at least once after the recording**. The folder list above will look frozen at the date Voice Memos.app was last opened — even though Apple's `CloudRecordings.db*` next to the recordings has updated metadata.
+
+If the user expects more recent recordings than the scan returns:
+
+1. **Warn before defaulting to the newest file.** Mention explicitly: *"newest I can see is YYYY-MM-DD HH:MM — if you've recorded since, open Voice Memos.app on the Mac to trigger sync."*
+2. **Soft sync trigger.** With user OK, run `open -a "Voice Memos"` and re-scan after 5–10 seconds; new .m4a files often appear quickly.
+3. **Detection heuristic** (imperfect but useful): if `~/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings/CloudRecordings.db-shm` mtime is significantly newer than the newest `.m4a` mtime, sync may be pending.
+
+This silently breaks "transcribe my latest voice memo" workflows when the user records on iPhone but works in Wave/terminal on Mac (Voice Memos.app not in their normal flow). Always disclose what you actually see before transcribing.
 
 ## Language and translation
 
@@ -117,7 +146,7 @@ If the user wants a Markdown transcript with sections, do the transcription firs
 
 - **Wrong binary name.** It's `mytranscriber-daemon` (or `rememberthis-daemon`). Older docs and PATH installations may reference `transcriber` — that's stale.
 - **Spaces in the app path.** Always quote: `"/Applications/My Transcriber.app/Contents/MacOS/mytranscriber-daemon"`.
-- **Long files.** A 2-hour recording can take 10–30 minutes. Run in a backgrounded shell or warn the user before starting.
+- **Long files have no resume.** A 2-hour recording can take 10–30 minutes. If the daemon is killed mid-stream (Bash timeout, terminal close, system sleep), the partial output is lost — you restart from segment 0. For files >5 minutes, tell the user the expected duration up front and either run with no Bash timeout or background the job in a separate cctabs tab. Tracked upstream as RT Issue #56.
 - **Sandboxed Voice Memos.** The shared group container path above is read-accessible; don't try to use the older `~/Library/Application Support/com.apple.voicememos/` path (sandboxed away on recent macOS).
 
 ## Notes
