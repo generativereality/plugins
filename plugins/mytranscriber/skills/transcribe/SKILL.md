@@ -7,22 +7,24 @@ description: Transcribe audio or video files locally with My Transcriber (Whispe
 
 Transcribe audio or video files locally using the My Transcriber CLI. Runs Whisper `large-v3-turbo` on-device — no upload, no cloud, no per-minute fees.
 
-## Prerequisite: locate the daemon
+## Prerequisite: locate the CLI
 
-The CLI ships inside the My Transcriber app bundle. Detect it in this order:
+The CLI lives at the app's main executable inside the bundle (`transcriber` for My Transcriber, `rememberthis` for Remember This). It's a thin Swift shim that `execv`'s into the sibling `*-daemon` for known subcommands (`transcribe`, `mcp-server`, `stats`, etc.) — so invoking it with `transcribe …` runs the same code as the daemon directly, but stays consistent with the path users see in `/Applications/` + the way `.mcp.json` is wired.
 
-1. `/Applications/My Transcriber.app/Contents/MacOS/mytranscriber-daemon` ← preferred
-2. `/Applications/Remember This.app/Contents/MacOS/rememberthis-daemon` ← same daemon, different brand
-3. `~/Applications/My Transcriber.app/Contents/MacOS/mytranscriber-daemon` ← user-scoped install
+Detect in this order:
+
+1. `/Applications/My Transcriber.app/Contents/MacOS/transcriber` ← preferred
+2. `~/Applications/My Transcriber.app/Contents/MacOS/transcriber` ← user-scoped install
+3. `/Applications/Remember This.app/Contents/MacOS/rememberthis` ← same code, sibling brand
 
 ```bash
 for p in \
-  "/Applications/My Transcriber.app/Contents/MacOS/mytranscriber-daemon" \
-  "$HOME/Applications/My Transcriber.app/Contents/MacOS/mytranscriber-daemon" \
-  "/Applications/Remember This.app/Contents/MacOS/rememberthis-daemon"; do
-  [ -x "$p" ] && DAEMON="$p" && break
+  "/Applications/My Transcriber.app/Contents/MacOS/transcriber" \
+  "$HOME/Applications/My Transcriber.app/Contents/MacOS/transcriber" \
+  "/Applications/Remember This.app/Contents/MacOS/rememberthis"; do
+  [ -x "$p" ] && MT="$p" && break
 done
-echo "${DAEMON:-NOT_FOUND}"
+echo "${MT:-NOT_FOUND}"
 ```
 
 If none are found, stop and tell the user:
@@ -57,7 +59,7 @@ If a request is bulk-flavored ("everything", "all of them", "the latest batch"),
 ## CLI surface
 
 ```
-mytranscriber-daemon transcribe <FILE> [OPTIONS]
+transcriber transcribe <FILE> [OPTIONS]
 
   -o, --output <FILE>        Output file (default: stdout)
   -l, --language <CODE>      Language code: en, sv, auto, etc. [default: auto]
@@ -75,7 +77,7 @@ Speed: roughly **5–15 minutes per hour of audio** on Apple Silicon at `large-v
 The user gives you a path. Default to writing the transcript next to the source as `<basename>.transcript.md`.
 
 ```bash
-"$DAEMON" transcribe "/path/to/recording.m4a" \
+"$MT" transcribe "/path/to/recording.m4a" \
   --output "/path/to/recording.transcript.md"
 ```
 
@@ -144,8 +146,8 @@ If the user wants a Markdown transcript with sections, do the transcription firs
 
 ## Common pitfalls
 
-- **Wrong binary name.** It's `mytranscriber-daemon` (or `rememberthis-daemon`). Older docs and PATH installations may reference `transcriber` — that's stale.
-- **Spaces in the app path.** Always quote: `"/Applications/My Transcriber.app/Contents/MacOS/mytranscriber-daemon"`.
+- **Binary names.** The canonical CLI entry is the Swift app binary — `transcriber` for MT, `rememberthis` for RT. It's a thin shim that execs into the sibling `*-daemon` for known subcommands. Older docs may reference `mytranscriber-daemon` / `rememberthis-daemon` directly; that still works but the shim is the new canonical path and what `.mcp.json` is wired against.
+- **Spaces in the app path.** Always quote: `"/Applications/My Transcriber.app/Contents/MacOS/transcriber"`.
 - **Long files have no resume.** A 2-hour recording can take 10–30 minutes. If the daemon is killed mid-stream (Bash timeout, terminal close, system sleep), the partial output is lost — you restart from segment 0. For files >5 minutes, tell the user the expected duration up front and either run with no Bash timeout or background the job in a separate cctabs tab. Tracked upstream as RT Issue #56.
 - **Sandboxed Voice Memos.** The shared group container path above is read-accessible; don't try to use the older `~/Library/Application Support/com.apple.voicememos/` path (sandboxed away on recent macOS).
 
