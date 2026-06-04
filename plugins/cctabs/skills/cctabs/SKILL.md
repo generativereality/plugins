@@ -44,6 +44,14 @@ npm install -g @generativereality/cctabs
 
 Do not modify PATH or npm configuration beyond this.
 
+### Check the installed version isn't stale
+
+On your first cctabs invocation in a session, look at the version banner cctabs prints (`(@generativereality/cctabs vX.Y.Z)`) and at any `[cctabs] OUTDATED ...` warning line in the output. If you see the warning — or if the banner version is older than the version in this skill's `plugin.json` — tell the user:
+
+> *"Your installed cctabs is `vX.Y.Z`; the current release is `vA.B.C`. Want me to upgrade with `npm install -g @generativereality/cctabs@latest` before continuing?"*
+
+Don't silently work around an outdated CLI: detection heuristics, command flags, and bug fixes diverge between versions, so misbehavior on the user's machine is often "binary on PATH lags behind the plugin docs you're reading." The Claude Code marketplace plugin update path only refreshes this skill — the npm-installed CLI binary is a separate channel and must be upgraded explicitly.
+
 ### Tabby users: a one-time plugin install is needed
 
 Wave Terminal works out of the box. **Tabby additionally needs a small companion plugin** that exposes a localhost HTTP API the cctabs CLI talks to.
@@ -66,7 +74,7 @@ On approval, run `cctabs install-tabby-plugin --yes`. Tabby quits ~2s after the 
 
 If the user wants to keep their other Tabby tabs intact, run `cctabs install-tabby-plugin --no-restart` instead and tell them to quit + reopen Tabby themselves.
 
-`cctabs doctor` is also available for a deliberate environment check (terminal, Wave Accessibility, plugin reachability, Wave DB) — useful if something feels off, but **not required as a preflight** since every command fails loudly on its own.
+`cctabs doctor` is also available for a deliberate environment check. It adapts to whichever terminal you're running in — terminal detection runs either way; on Wave it additionally inspects Accessibility permission and scans the Wave DB for orphan tabids; on Tabby it probes the cctabs plugin's localhost health endpoint. Useful if something feels off, but **not required as a preflight** since every command fails loudly on its own.
 
 #### Auto-install + auto-restart (recommended)
 
@@ -263,7 +271,7 @@ cctabs resume api ~/Dev/myapp
 
 ## Workflow: Restoring tabs after a reboot
 
-After a Wave/computer restart, every tab loses its Claude session and shows up with `terminal` or `unknown` status. `cctabs restore` walks every such tab, looks up its session by name across **all** Claude project directories, and re-attaches in place.
+After a terminal restart or computer reboot, every tab loses its Claude session and shows up with `terminal` or `unknown` status (true for both Wave and Tabby). `cctabs restore` walks every such tab, looks up its session by name across **all** Claude project directories, and re-attaches in place.
 
 ```bash
 cctabs restore                    # search all projects (default)
