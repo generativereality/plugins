@@ -3,9 +3,9 @@ name: cctabs
 description: |
   Manage Claude Code sessions across terminal tabs (Wave Terminal or Tabby) — list, open, fork, close, inspect output, send input. Each terminal tab runs its own Claude Code session.
 
-  TRIGGER when the user says any of: "open a new tab", "open a new cctab" (singular alias), "spawn a tab", "a new cctabs session", "in another tab", "in a separate tab", "fork this tab", "list my tabs", "close that tab", "send to <tab>", "resume <name>" — anything that refers to a terminal tab running Claude Code. ALSO trigger for: "/cctabs", or when the user mentions Wave Terminal / Tabby tab management for Claude Code.
+  TRIGGER when the user says any of: "open a tab", "open a new tab", "open a tab with prompt …", "open a tab and <do X>", "open a tab that <does X>", "open a new cctab" (singular alias), "spawn a tab", "a new cctabs session", "in another tab", "in a separate tab", "fork this tab", "list my tabs", "close that tab", "send to <tab>", "resume <name>" — anything that refers to a terminal tab running Claude Code. ALSO trigger for: "/cctabs", or when the user mentions Wave Terminal / Tabby tab management for Claude Code.
 
-  DO NOT confuse with the Agent tool (background subagents): if the user explicitly says "tab" / "cctab" / "cctabs" they want a separate Claude Code session in a real terminal tab — call this skill, not Agent. The Agent tool is correct when the user says "subagent", "background agent", "spawn an agent", "do this in parallel without a new tab", or when the work is interconnected with the current session's filesystem state.
+  The word "tab" is DECISIVE. If the user says "tab" / "cctab" / "cctabs" — even paired with a task, and even when that task sounds like background or parallel work (e.g. "open a tab with prompt 'do X asap'", "open a tab and fix Y") — they mean a real terminal tab running its own Claude Code session: CALL THIS SKILL, not the Agent tool. Handing a task to a fresh tab is the single most common use: "open a tab with prompt <task>" maps directly to `cctabs new <name> [dir] --prompt "<task>"`. A background/fork subagent (the Agent tool) is NOT a tab and must never be substituted when the user said "tab" — its output is invisible in the terminal and it cannot be attached to, resumed, watched, or driven as a session. Use the Agent tool ONLY when the user explicitly says "subagent", "background agent", "spawn an agent", "do this in parallel without a new tab", or when the work is tightly interconnected with the current session's filesystem state and must share it.
 
   NOT for: browser tabs (use playwright/browser-automation), tmux panes, screen sessions, or non-Claude terminals.
 ---
@@ -358,13 +358,10 @@ cctabs send payments "yes\n"   # quick replies
 
 ### Spawning gotchas (hard-won)
 
-1. **Verify the worktree base immediately after spawn.** `--worktree` does not always branch from your current HEAD — if you have local un-pushed commits, the child session may branch from an older commit (whatever the remote tracking branch points at). Always check:
+1. **Worktree base.** `cctabs new --worktree` anchors the new worktree at the target dir's current HEAD (cctabs runs `git worktree add` explicitly, not delegating to `claude --worktree`). The spawn line confirms the base SHA, e.g. `Worktree created at … (base 9d4a26d…)`. If a branch named `worktree-<name>` already exists from a prior run, the worktree is checked out at *that branch's* tip and cctabs prints a warning — verify it's what you want before sending work into the tab. To double-check after spawn:
    ```bash
-   cctabs new kid ~/Dev/myapp --worktree -p "..."
-   # Then in the ORCHESTRATOR tab:
    git -C ~/Dev/myapp/.claude/worktrees/kid log --oneline -1
    ```
-   If the base is not what you expected, abort and fix: either push your commits to the tracking branch first, or spawn without `--worktree` and let the subagent work on your branch directly.
 
 2. **Never instruct a subagent to "rebase your branch on main/next."** Subagents interpret this liberally. A common failure mode: the subagent does `git reset --hard <remote>` and throws away its own completed commits, trying to redo the work from scratch. Instead:
    - Have the orchestrator handle rebases after the subagent is done.
@@ -400,9 +397,10 @@ echo "do the thing" | cctabs send auth       # pipe via stdin
 
 ```bash
 cctabs new feature-name ~/Dev/myapp --worktree
-# Equivalent to: cd ~/Dev/myapp && claude --worktree "feature-name" --name "feature-name"
-# Claude creates: ~/Dev/myapp/.claude/worktrees/feature-name/
-# Claude creates branch: worktree-feature-name
+# cctabs creates the worktree itself, pinned to ~/Dev/myapp's current HEAD:
+#   git -C ~/Dev/myapp worktree add -b worktree-feature-name \
+#     ~/Dev/myapp/.claude/worktrees/feature-name <current HEAD>
+# Then opens a tab at the worktree path and runs plain `claude --name feature-name`.
 ```
 
 ### Existing branch — ask Claude to enter the worktree mid-session
@@ -426,7 +424,7 @@ cctabs new feature ~/Dev/myapp --worktree
 
 **Why:** Manually created worktree dirs placed outside the repo confuse Claude Code's session tracking, project memory lookup (`.claude/` is in the main repo), and CLAUDE.md resolution. Claude Code's built-in worktree support keeps everything co-located under `.claude/worktrees/` and handles cleanup on session exit.
 
-**Worktree base-commit caveat:** after spawning with `--worktree`, verify the branch base matches your expectation (see "Spawning gotchas" above). If your orchestrator has local commits that haven't been pushed, the worktree may branch from the stale remote tip instead of HEAD. This bites hardest when parallel tabs need to share schema/types your orchestrator has been working on — they won't see those changes if they branched before the commits landed upstream.
+**Worktree base commit:** cctabs anchors the new worktree at the target dir's current HEAD (it runs `git worktree add` explicitly rather than delegating to `claude --worktree`), so un-pushed local commits *are* visible to the child session. The success line prints the base SHA — confirm it matches what you expect, especially if you reuse a worktree name and see a "branch already existed" warning.
 
 ## Handling `cctabs new` Timeout Errors
 
