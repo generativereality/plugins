@@ -110,6 +110,35 @@ If the user prefers, point them at Tabby → **Settings → Plugins**, search "c
 
 Do not assume "no Wave detected → cctabs unusable" — Tabby is fully supported.
 
+### Driving a remote Tabby over SSH
+
+cctabs can open/list/close/send tabs on **another machine's** Tabby over SSH,
+as long as that machine's cctabs plugin is running. The plugin listens on
+`127.0.0.1:3300`, and an SSH session on the same host reaches it fine.
+
+The only wrinkle: over SSH the parent terminal never exports `TERM_PROGRAM`,
+so cctabs can't sniff the terminal from the environment. Two ways it copes:
+
+- **Auto-fallback (usually nothing to do):** when env detection comes up
+  `unknown`, cctabs probes the Tabby plugin on `127.0.0.1:3300` and, if it
+  answers, treats the session as Tabby. So a bare
+  `ssh host 'cctabs new foo "~"'` just works when the remote plugin is up.
+- **Explicit override:** set `CCTABS_TERMINAL=tabby` (alias `CCTABS_BACKEND`)
+  to force the Tabby backend regardless of `TERM_PROGRAM` — belt-and-braces
+  when you don't want to rely on the probe, or to force a specific backend.
+
+```bash
+# Open a tab on the other Mac's Tabby, from here:
+ssh motin@motin-mbp21.local 'cctabs new mbp21-task "~/Dev/proj"'
+# Force the backend explicitly if you prefer:
+ssh motin@motin-mbp21.local 'CCTABS_TERMINAL=tabby cctabs new mbp21-task "~/Dev/proj"'
+```
+
+Tabs are still **per-machine** — each host has its own Tabby + plugin, so a tab
+opened via SSH lives on the remote machine. Verify a remote host is ready with
+`ssh host 'cctabs doctor'`: it reports `Terminal — tabby (via plugin probe …)`
+when the fallback is in play.
+
 ---
 
 Each Claude Code session runs in its own **terminal tab**. `cctabs` lets you — and other Claude Code sessions — introspect and orchestrate the full session fleet.
@@ -148,7 +177,7 @@ cctabs resume <name> [dir]               # resume last session (reuses tab or cr
 cctabs restore [dir] [--dry]             # resume every dead tab (e.g. after a reboot)
 cctabs fork <tab-name> [-n new-name]     # fork session into new tab (--resume <id> --fork-session)
 cctabs close <name-or-id>                # close a tab
-cctabs rename <name-or-id> <new-name>    # rename a tab
+cctabs rename <name-or-id> <new-name>    # rename the TAB TITLE only (not the live claude/RC name — see "Two names")
 cctabs scrollback <tab-or-block> [n]    # read terminal output (default: 50 lines)
 cctabs send <tab-or-block> [text]        # send input — arg, --file, or stdin pipe
 cctabs export <name> [--out path]        # bundle a tab + its claude session into a tarball
@@ -460,6 +489,62 @@ cctabs close old-feature               # close by name (prefix match)
 cctabs close e5f6a7b8                  # close by block ID prefix
 ```
 
+## Two names: the tab title vs. the claude session (RC) name
+
+Every session actually carries **two independent names**, and it's easy to change one while assuming you changed both:
+
+1. **Tabby/Wave tab title** — the text on the terminal tab. Set by `cctabs new`/`resume`/`fork`, and changeable with `cctabs rename`.
+2. **The claude session name** — the **remote-control (RC) session name shown on claude.ai** when you control the session from the web/mobile app. It mirrors the session's **current local name**, which is *initialized* from the launch `--name` (what cctabs passes) and thereafter changed by `/rename`.
+
+`cctabs rename <tab> <newName>` changes **only the tab title**. It does **not** touch the running claude session, so the claude.ai RC name is unchanged. To rename the **live** claude session (and therefore its RC name), send Claude Code's `/rename` slash command into the tab:
+
+```bash
+cctabs rename mytab new-title                 # tab title only
+cctabs send mytab "/rename new-title"          # live claude session + RC name (Claude replies "Session renamed to: …")
+```
+
+Use both together when you want the tab title and the RC name to stay in sync on an already-running session.
+
+> **How the RC name behaves (validated by controlled test).** The RC name tracks the session's **current local name** — *not* the launch `--name`. Launch `--name` only sets the *initial* name; a `/rename` changes it, and the change **persists across reconnects** — both a manual `/remote-control` toggle and an automatic (network-drop) reconnect re-register under the *current local name*, so **reconnect does NOT revert to the launch name**. The one catch: `/rename` only reaches the RC list **while the session is connected**. If you `/rename` a session whose remote-control bridge is **disconnected**, the local name changes but the RC list keeps showing the last-registered name until the session **reconnects**, at which point it syncs. So a session showing a stale name in the RC list is almost always one that was renamed **while disconnected** (or never renamed) — reconnect it, or `/rename` it once it's connected (`cctabs sessions` shows which are live). The zero-fuss option is to launch prefixed in the first place via the `prefix` config below, so the name is right from the first registration and there's nothing to re-apply.
+
+### The `prefix` config setting
+
+When several machines share **one claude.ai remote-control session list**, sessions from different machines can collide to the same RC name and become ambiguous. Set a per-install `prefix` so this machine stamps every name it mints:
+
+```toml
+# ~/.config/cctabs/config.toml
+[defaults]
+prefix = "mbp18-"
+```
+
+`cctabs config` shows the current value. When set, the prefix is prepended to **both** the tab title **and** the `claude --name` (RC name) for every name **minted** by:
+
+- `cctabs new <name>` → tab + RC name become `mbp18-<name>`
+- `cctabs resume <name>` → resolves the tab/session and re-launches `--name` in prefixed space
+- `cctabs fork <src> [-n <name>]` → the new fork tab + its (now explicitly named) RC session
+
+It is **idempotent** — a name you already typed with the prefix (`mbp18-auth`) is not prefixed twice. It does **not** retro-rename existing tabs, and `restore`/`import` keep each session's already-recorded name untouched (they reattach, they don't mint).
+
+### Recipe: prefix all *existing* tabs on this machine
+
+Setting `prefix` only affects newly-minted names. To retro-apply a prefix (e.g. `mbp18-`) to tabs/sessions that are already live, do both renames for each tab:
+
+```bash
+# For each existing tab NAME (from `cctabs sessions`):
+cctabs rename auth mbp18-auth                  # 1. tab title
+cctabs send   auth "/rename mbp18-auth"        # 2. live claude session + RC name
+# (send resolves by the CURRENT name, so rename the title AFTER, or send first then rename —
+#  just don't rename the title and then try to `send` by the old name.)
+```
+
+Order that's safe: **`send` the `/rename` first (matches the current title), then `cctabs rename` the tab title.** Claude acknowledges each `/rename` with "Session renamed to: …". After this one-time sweep, set `prefix` in config so all *future* tabs carry it automatically.
+
+**The `/rename` only reaches the RC list for sessions that are currently connected** (see the note above — RC tracks the current local name, and `/rename` pushes it only over a live bridge). So:
+- **Connected sessions:** `/rename` updates RC and the change survives reconnects. Done.
+- **Disconnected sessions** (`cctabs sessions` shows them as `terminal`/not live): `/rename` changes the local name but RC won't reflect it until the session reconnects. Either reconnect it (it then registers under the now-prefixed local name) or `cctabs resume mbp18-<name>` it to relaunch with the prefixed `--name`.
+
+New sessions started after `prefix` is set are correct from their first RC registration and need none of this.
+
 ## Tab Naming Conventions
 
 Name tabs after the **project or task**:
@@ -473,8 +558,9 @@ Name tabs after the **project or task**:
 
 - Tab names are matched by exact name or prefix (case-insensitive)
 - Block IDs can be abbreviated to the first 8 characters
-- `cctabs new` and `cctabs resume` automatically pass `--name <tab-name>` to claude, syncing the session display name with the tab title
+- `cctabs new` and `cctabs resume` automatically pass `--name <tab-name>` to claude, syncing the session display name with the tab title. `cctabs rename` changes only the tab title — to also rename the live session/RC name use `cctabs send <tab> "/rename <newName>"` (see "Two names" above)
 - Configured `claude.flags` in `~/.config/cctabs/config.toml` are applied to every session
+- `defaults.prefix` in `~/.config/cctabs/config.toml` (empty by default) is prepended to both the tab title and the `claude --name` for every name minted by `new`/`resume`/`fork` — set it to disambiguate this machine when multiple machines share one claude.ai remote-control list
 - `cctabs send` resolves tab names to their terminal block automatically
 
 ## Lesson: the common failure mode
