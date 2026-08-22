@@ -8,6 +8,11 @@ description: >
   pack", "re-render the pre-reads", "PDF of this doc", "print this doc", "make a pre-read out
   of this", "styled version for the meeting", "put this on screen", "share this doc with
   marketing / outside the team", or names a doc plus "HTML" / "PDF" / "screen-share".
+  ALSO use it when the operator wants a rendered doc as a **Claude Artifact** or a link —
+  "make this an artifact", "so I can review it on my phone", "give me a URL for this doc",
+  "publish this doc", "read it on mobile" — because `--artifact` emits exactly the body-level
+  HTML the Artifact host wants, and hand-authoring a page from the same markdown throws away
+  the render.
   Documents the design contract (callout glyph mapping, type scale, tokens) so renders stay
   consistent. NOT for slide decks — a deck is a different job and a different tool.
 ---
@@ -177,7 +182,7 @@ be sized from the text actually inside it. What that buys, and what it costs:
 
 | Thing                      | Why it is that way                                                                                                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Needs a Chromium           | `playwright-core` reuses whatever is already in the shared Playwright cache — no second download. Missing? The error says so: `npx playwright install chromium`, or `--no-diagrams`.       |
+| Needs a Chromium           | mermaid measures its own layout, so a real browser is required (jsdom has none). Resolved in order: `REVIEW_MD_CHROMIUM`, the Playwright cache, then a stock Chrome / Chromium / Edge / Brave. If Chrome is installed there is nothing to install. Else `npx playwright install chromium`, or `--no-diagrams`. |
 | One browser launch per run | Every diagram in every doc of a pack renders in a single launch, so a 12-doc pack pays ~1s of fixed cost once.                                                                             |
 | `htmlLabels: false`        | Labels are `<text>`, never HTML in a `<foreignObject>` — the foreignObject kind is the one that comes out blank when the page is printed.                                                  |
 | Deterministic element ids  | `mmd-<doc>-<block>`. mermaid scopes its generated CSS and arrowhead markers under the id, so two diagrams on a page must not share one, and a random id would make every re-render a diff. |
@@ -231,6 +236,45 @@ the footnote check, so `--strict` fails on it. If a diagram renders as a code bl
   watermark drop out (**and the grid un-grids with them**, or the body prints two-thirds width
   against a blank strip), callouts/tables/rows don't split across pages, `thead` repeats, external
   link targets print inline.
+
+### Light and dark
+
+The palette is token-level, and both themes are defined from the same writer, so they cannot
+drift. Readers get their system theme; an explicit `data-theme="light"|"dark"` on the root wins
+over it in both directions. The accent lightens for dark (`#8c2f1b` is ~2.1:1 on a dark ground —
+an accent that fails contrast in half the renders is a bug only some readers see).
+
+`@media print` is deliberately exempt and keeps its own hardcoded values: paper is white whatever
+the screen is doing.
+
+### Publishing to a Claude Artifact
+
+⚠️ **When the operator asks for "an artifact" of a doc that exists as markdown, reach for this
+first — not a hand-authored page.** The pull the other way is strong: a request for an artifact
+loads `artifact-design`, which asks you to *design* a page, and designing one from the same
+markdown is a perfectly reasonable thing to do when nothing else exists. Something else does now.
+
+Use `--artifact` when the operator wants **this document, on a phone or behind a link** — the
+render they already reviewed, faithfully, in seconds. Hand-author only when they want a
+**different artefact**: a designed adaptation that reorders the content, adds a verdict panel,
+annotates a table, or otherwise makes editorial decisions the markdown does not contain. That is
+real work with a real reason; it is just not what "so I can read it on my phone" is asking for.
+Two tells that `--artifact` is what is wanted: the doc has already been rendered once, and the
+operator is asking for a *destination* rather than a treatment.
+
+
+```bash
+review-md docs/PLAN.md --artifact -o plan.html
+```
+
+`--artifact` emits **body-level HTML only** — no `<!doctype>`, `<html>`, `<head>` or `<body>`,
+because the Artifact host supplies those and wraps what it is given; our own shell would nest a
+second document inside the first. The `<title>` is kept, since the host reads it to name the tab
+and the gallery card. Everything else is identical to a normal render.
+
+This works at all because self-containment was already the design: the Artifact sandbox blocks
+every external host, and this renderer inlines its CSS, its woff2 subsets, and its diagrams as
+SVG. Nothing is given up to publish one — and the result opens on a phone, which is the point.
 
 ## Repo-awareness — derived, never hardcoded
 
