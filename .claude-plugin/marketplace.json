@@ -37,14 +37,14 @@
       "homepage": "https://mytranscriber.app"
     },
     {
-      "name": "render-doc",
-      "description": "Markdown \u2192 one self-contained styled HTML file (and a sane PDF). Build-time mermaid\u2192inline-SVG, glyph callouts, footnote-integrity checking, print stylesheet, pack manifests.",
+      "name": "review-md",
+      "description": "Markdown \u2192 one self-contained styled HTML file (and a sane PDF). Build-time mermaid\u2192inline-SVG, glyph callouts, footnote-integrity checking, dark mode, print stylesheet, doc packs, and an --artifact mode for Claude Artifacts.",
       "author": {
         "name": "generativereality"
       },
-      "source": "./plugins/render-doc",
+      "source": "./plugins/review-md",
       "category": "productivity",
-      "homepage": "https://github.com/generativereality/render-doc"
+      "homepage": "https://github.com/generativereality/review-md"
     }
   ]
 }
