@@ -28,13 +28,23 @@
     },
     {
       "name": "mytranscriber",
-      "description": "Local audio/video transcription via My Transcriber CLI. High-quality Whisper transcription on-device — no cloud. Requires the My Transcriber app installed.",
+      "description": "Local audio/video transcription via My Transcriber CLI. High-quality Whisper transcription on-device \u2014 no cloud. Requires the My Transcriber app installed.",
       "author": {
         "name": "generativereality"
       },
       "source": "./plugins/mytranscriber",
       "category": "productivity",
       "homepage": "https://mytranscriber.app"
+    },
+    {
+      "name": "render-doc",
+      "description": "Markdown \u2192 one self-contained styled HTML file (and a sane PDF). Build-time mermaid\u2192inline-SVG, glyph callouts, footnote-integrity checking, print stylesheet, pack manifests.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/render-doc",
+      "category": "productivity",
+      "homepage": "https://github.com/generativereality/render-doc"
     }
   ]
 }
