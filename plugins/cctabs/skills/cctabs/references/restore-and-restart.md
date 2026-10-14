@@ -55,6 +55,17 @@ cctabs restore --manifest snapshot.json --dry   # preview first
 cctabs restore --manifest snapshot.json --create-missing   # spawn tabs for entries with none
 ```
 
+**What order the bar comes back in.** Tabs already in the bar keep their places — above all the tab you ran `restore` from — and every tab the restore *creates* is appended after them, **in manifest order**. A recreated tab takes the slot of the dead one it replaced. So order the manifest the way you want the new tabs, and put the batch you want nearest the front first. To reorder afterwards, `cctabs sort --first a,b,c` pins exactly those tabs to the front in that order (see [tabs.md](tabs.md)).
+
+⛔ **Don't split one restore into two runs to mix running and suspended tabs** — each run appends its own batch, so the order becomes "whichever ran last goes last" rather than anything you chose. Mix them in one run instead:
+
+```bash
+cctabs restore --manifest snapshot.json -c --suspend-older-than 3d   # quiet for 3+ days → suspended, the rest running
+cctabs restore --manifest snapshot.json -c                          # …or mark entries "suspended": true yourself
+```
+
+`--suspend-older-than` takes an age (`90m`, `12h`, `3d`, `2w`) or a date (`2026-10-10`, local time), judged by each session's last transcript write. An entry whose transcript can't be found is left running and named, not guessed at. Before 0.5.10, a manifest restore listed only its own tabs when rebuilding the bar, and the terminal sorts listed tabs ahead of unlisted ones — so each run moved its batch to the **front**, ahead of the tab that ran it.
+
 **`session_id: null` now says why.** Every row carries `session_lookup`:
 `found`, `not-found` (searched every config dir; nothing is titled after this
 tab — with `sessions_in_dir` counting the transcripts that *do* exist for its
@@ -77,6 +88,8 @@ Two consequences worth knowing:
 - **Scan mode can't capture it.** A bare `cctabs restore` rebuilds tabs whose sessions are already gone, and a tab with no session has no footer to read. Modes round-trip through `--manifest` only, which means capturing the manifest *before* you close anything.
 
 **One session, one Claude — restore now enforces it.** Two entries with different names on the same `session_id` used to spawn two tabs racing to be the active worker for one conversation (Remote Control's "this connection is no longer the active worker for the session (code 4090)"). Restore now keys on the id as well as the name: the second entry is reported `duplicate-session` and skipped, and an entry whose session a live Claude is *already running* — its argv says `--resume <id>`, in any tab — is reported `session-live` and never spawned or typed into. The shape is easy to produce by hand: a process's `--name` is a spawn-time snapshot, so reading tab names from `ps` lists a renamed tab twice. `cctabs manifest` builds the manifest from the tab list instead and refuses a collision.
+
+**The other way round: one name, two sessions.** Two entries with the same name but different `session_id`s are two tabs, and both are restored — each in its own tab, even when one of them is already running. (Before 0.5.10 the second was skipped as a "duplicate entry".) An entry is only treated as a duplicate when it can't be told apart: same session, or an earlier claimant of the name whose session isn't known.
 
 **Bulk restore is reliable — with the current plugin.** A 45-tab close-and-restore completes in under a minute with tab order preserved. This used to be the opposite: spawning ~35+ tabs in one call left most of them registered in Tabby but sitting as empty shells at `? unreadable` status, because a Tabby tab only spawns its process once its terminal frontend attaches, which only happens once the tab has been focused — and each new tab stole focus from the last. `tabby-cctabs` ≥ 0.1.3 serialises tab creation internally and doesn't answer until the process is actually running, advertising `spawn-waits-for-pty` on `/api/health`; the CLI probes for that and only then spawns in parallel. Against an older plugin it falls back to one-at-a-time with a settle gap — slower, still correct.
 
