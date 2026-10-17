@@ -85,6 +85,16 @@
       "source": "./plugins/clerkai",
       "category": "productivity",
       "homepage": "https://clerkai.eu"
+    },
+    {
+      "name": "rememberthis",
+      "description": "Your own life, from your photos, voice memos and notes, with Remember This (https://rememberthis.ai).",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/rememberthis",
+      "category": "productivity",
+      "homepage": "https://rememberthis.ai"
     }
   ]
 }
