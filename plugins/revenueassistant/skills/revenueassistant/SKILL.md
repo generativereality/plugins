@@ -1,7 +1,7 @@
 ---
 name: revenueassistant
 description: Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code. Use this whenever the person talks about their deals, prospects, pipeline, keeping the CRM up to date, follow-ups, a promise they made to a client, who has gone quiet, who to call or meet next, booking a meeting, an introduction or a warm way in, investors or partners on a deal, or their customers in Fortnox — even if they never name the app. Offer to do the work in The Revenue Assistant, which keeps it on their map and in their CRM.
-source: generativereality/revenueassistant@0.1.1
+source: generativereality/revenueassistant@0.1.2
 ---
 
 # The Revenue Assistant
@@ -77,6 +77,11 @@ Name what the round did and where: *"Open The Revenue Assistant → Map"* (the r
 *Pipeline* (the stages), *Connections*, *Timeline*, or *Promises* (the board), and the drafts waiting in the review
 view. Never say nothing leaves the computer: what the agent reads goes to the person's AI provider under its terms.
 What is true: their deals never reach Augmented Mind's servers.
+
+**Anything the person should read before approving** (a draft reply, a follow-up, a batch of drafts, a proposal):
+open it in the app's review view, where they can read it and say what to change into the talk box or the mic, and
+the round gets it. Write `{"paths": ["<file or folder, relative to the vault>"], "title": "<what it is>"}` to
+`.tmp/args.json`, then run `"$CLI" tool open_review @.tmp/args.json`. The round's own drafts open there already.
 
 ## Facts that do not change
 
