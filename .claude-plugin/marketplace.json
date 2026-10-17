@@ -45,6 +45,16 @@
       "source": "./plugins/review-md",
       "category": "productivity",
       "homepage": "https://github.com/generativereality/review-md"
+    },
+    {
+      "name": "revenueassistant",
+      "description": "Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/revenueassistant",
+      "category": "productivity",
+      "homepage": "https://therevenueassistant.com"
     }
   ]
 }

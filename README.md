@@ -16,6 +16,7 @@ Claude Code plugin marketplace for [generativereality](https://github.com/genera
 | [browser-automation](https://github.com/generativereality/browser-automation) | Browser automation for Claude Code. Persistent Chrome profile, CDP connection. | `/plugin install browser-automation@generativereality` |
 | [mytranscriber](https://mytranscriber.app) | Local audio/video transcription via My Transcriber CLI. On-device Whisper, no cloud. | `/plugin install mytranscriber@generativereality` |
 | [review-md](https://github.com/generativereality/review-md) | Markdown → one self-contained styled HTML file. Mermaid inlined at build time, dark mode, print stylesheet. | `/plugin install review-md@generativereality` |
+| [revenueassistant](https://therevenueassistant.com) | Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code. | `/plugin install revenueassistant@generativereality` |
 
 ## Troubleshooting
 
