@@ -1,0 +1,11 @@
+{
+  "name": "rememberthis",
+  "description": "Your own life, from your photos, voice memos and notes, with Remember This (https://rememberthis.ai).",
+  "version": "0.14.0",
+  "author": {
+    "name": "generativereality",
+    "url": "https://rememberthis.ai"
+  },
+  "homepage": "https://rememberthis.ai",
+  "license": "MIT"
+}
