@@ -14,6 +14,12 @@ made before October 2026 `%LOCALAPPDATA%\The Revenue Assistant\revenueassistantd
 - **Neither exists:** The Revenue Assistant is not installed. Say so and give the download page, https://therevenueassistant.com. Never install it
 yourself.
 
+**Is it new enough?** `"$CLI" --help` works on every version: it must list an `app` line
+(macOS: `"$CLI" --help | grep -qE '^\s+app\s'`; Windows: `& $CLI --help | Select-String -Quiet '^\s+app\s'`).
+If it does not, the installed The Revenue Assistant is older than this skill. Say so, ask the person to update it (the app's own
+*Check for Updates*), and do not run `app` or `tool`: on an older version they open the app's window instead of
+answering.
+
 Every app tool is `"$CLI" tool <name> key=value …` (`"$CLI" tool list` lists them, `"$CLI" tool help <name>`
 explains one). For anything with prose in it, write the arguments as one JSON object to `.tmp/args.json` with your
 Write tool, then run `"$CLI" tool <name> @.tmp/args.json`: the shell check refuses inline JSON, a heredoc of JSON
