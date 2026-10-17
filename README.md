@@ -18,6 +18,7 @@ Claude Code plugin marketplace for [generativereality](https://github.com/genera
 | [review-md](https://github.com/generativereality/review-md) | Markdown → one self-contained styled HTML file. Mermaid inlined at build time, dark mode, print stylesheet. | `/plugin install review-md@generativereality` |
 | [revenueassistant](https://therevenueassistant.com) | Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code. | `/plugin install revenueassistant@generativereality` |
 | [revenuemagnet](https://revenuemag.net) | Grow a product with Revenue Magnet (https://revenuemag.net), the growth system an agent builds and keeps for the person, on their own computer and their own Claude Code. | `/plugin install revenuemagnet@generativereality` |
+| [mindmymoney](https://mindmy.money) | Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you. | `/plugin install mindmymoney@generativereality` |
 
 ## Troubleshooting
 
