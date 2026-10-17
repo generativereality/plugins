@@ -65,6 +65,16 @@
       "source": "./plugins/revenuemagnet",
       "category": "productivity",
       "homepage": "https://revenuemag.net"
+    },
+    {
+      "name": "mindmymoney",
+      "description": "Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/mindmymoney",
+      "category": "productivity",
+      "homepage": "https://mindmy.money"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "name": "mindmymoney",
+  "description": "Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you.",
+  "version": "0.1.0",
+  "author": {
+    "name": "generativereality",
+    "url": "https://mindmy.money"
+  },
+  "homepage": "https://mindmy.money",
+  "license": "MIT"
+}
