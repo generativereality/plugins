@@ -47,6 +47,11 @@ app takes it as if it was typed in its window and starts its first work; tell th
 The Revenue Assistant.
 - `answered`: first run is behind them. Go on to step 4.
 
+**Before any work: `consent` in `app status`.** `pending` means the person has not yet answered The Revenue Assistant's card
+that says what an agent working as them can do. Nothing starts until they do: every round and every note is
+refused. Tell them to open The Revenue Assistant and answer that card (it shows during first run), then run `app status` again.
+Never answer it for them. `answered` means go on.
+
 ## 4. Hand the work to the app
 
 The work runs in The Revenue Assistant's own sessions, so it shows in the app, keeps the vault's rules and can be continued
