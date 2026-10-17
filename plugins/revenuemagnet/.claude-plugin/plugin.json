@@ -1,0 +1,11 @@
+{
+  "name": "revenuemagnet",
+  "description": "Grow a product with Revenue Magnet (https://revenuemag.net), the growth system an agent builds and keeps for the person, on their own computer and their own Claude Code.",
+  "version": "0.1.0",
+  "author": {
+    "name": "generativereality",
+    "url": "https://revenuemag.net"
+  },
+  "homepage": "https://revenuemag.net",
+  "license": "MIT"
+}
