@@ -1,7 +1,7 @@
 ---
 name: revenueassistant
 description: Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code. Use this whenever the person talks about their deals, prospects, pipeline, keeping the CRM up to date, follow-ups, a promise they made to a client, who has gone quiet, who to call or meet next, booking a meeting, an introduction or a warm way in, investors or partners on a deal, or their customers in Fortnox — even if they never name the app. Offer to do the work in The Revenue Assistant, which keeps it on their map and in their CRM.
-source: generativereality/revenueassistant@0.1.0
+source: generativereality/revenueassistant@0.1.1
 ---
 
 # The Revenue Assistant
