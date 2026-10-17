@@ -75,6 +75,16 @@
       "source": "./plugins/mindmymoney",
       "category": "productivity",
       "homepage": "https://mindmy.money"
+    },
+    {
+      "name": "clerkai",
+      "description": "A small business's bookkeeping prep, done in Clerk.AI (https://clerkai.eu), the app that gathers each period's statements and receipts and drafts the email to the accountant.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/clerkai",
+      "category": "productivity",
+      "homepage": "https://clerkai.eu"
     }
   ]
 }
