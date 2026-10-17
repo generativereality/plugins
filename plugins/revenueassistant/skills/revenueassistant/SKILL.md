@@ -1,7 +1,7 @@
 ---
 name: revenueassistant
 description: Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code. Use this whenever the person talks about their deals, prospects, pipeline, keeping the CRM up to date, follow-ups, a promise they made to a client, who has gone quiet, who to call or meet next, booking a meeting, an introduction or a warm way in, investors or partners on a deal, or their customers in Fortnox — even if they never name the app. Offer to do the work in The Revenue Assistant, which keeps it on their map and in their CRM.
-source: generativereality/revenueassistant@0.1.2
+source: generativereality/revenueassistant@0.1.3
 ---
 
 # The Revenue Assistant
@@ -14,7 +14,7 @@ from invoices and orders; prospects stay in the CRM or the team's folder). For t
 outcome**: more meetings booked, promises kept, and the CRM current without typing.
 
 It works as a map of everyone around their work (rings by how close, sectors by what kind), a board of promises and
-follow-ups, and question cards. The app draws them; its own Claude Code sessions do the work; the person approves.
+follow-ups, and question cards. The app draws them; its own AI sessions (Claude Code or Codex) do the work; the person decides.
 
 ## When to use this skill
 
@@ -40,7 +40,7 @@ with content, SEO and analytics (that is Revenue Magnet, https://revenuemag.net,
 Before anything else, follow `references/using-the-app.md`: it finds the app and its command line (called `$CLI`
 below), starts the app, and does first run. Not installed: give https://therevenueassistant.com/download.
 
-**First run for this brand.** The app's first question is **"Where do your deals live today?"**. When helping the
+**First run for this brand.** The app's first question is **"Where do your deals live, and where does your team keep its work?"**. When helping the
 person answer, look at what this session can already see and name it plainly: the team's shared folder or repo
 (playbooks, ICP, a prospects spreadsheet), the CRM they work in (any they open in a browser), their inbox and
 calendar, and in Sweden whether their customers are in Fortnox. The answer is theirs; suggest, never decide.
@@ -67,16 +67,21 @@ If a round is already running, the note goes into it; otherwise a round starts w
   list_open_questions` shows them; pass on what the person says with `answer_question`. A follow-up to a running
   round: `send_dreamer_message`.
 
-The rules the round keeps are in the vault (`CLAUDE.md` and `.claude/skills/map-*`). The ones a person meets: **no
-message, CRM change or invitation goes anywhere without their approval of that exact item, from their own
-account**; every claim cites its source; clients' confidences are never named to another client.
+The rules the round keeps are in the vault (`CLAUDE.md` and `.claude/skills/map-*`). The ones a person meets: **send
+no message, CRM change or invitation without the person's approval of that exact item, from their own account**;
+cite the source of every claim; never name a client's confidences to another client.
+
+**Never promise the person an approval step or a safeguard.** AI makes mistakes, and everything the app does for
+them is their responsibility, whether or not they checked it. Describe how it works ("it shows you the draft
+first"), never what it guarantees ("nothing goes out without your yes").
 
 ## 3. Say what changed and where to see it
 
 Name what the round did and where: *"Open The Revenue Assistant → Map"* (the radar of everyone around the work),
 *Pipeline* (the stages), *Connections*, *Timeline*, or *Promises* (the board), and the drafts waiting in the review
 view. Never say nothing leaves the computer: what the agent reads goes to the person's AI provider under its terms.
-What is true: their deals never reach Augmented Mind's servers.
+What is true: their deals never reach Augmented Mind's servers. The provider is the engine they chose in the app:
+Anthropic for Claude, OpenAI for ChatGPT (Codex).
 
 **Anything the person should read before approving** (a draft reply, a follow-up, a batch of drafts, a proposal):
 open it in the app's review view, where they can read it and say what to change into the talk box or the mic, and
