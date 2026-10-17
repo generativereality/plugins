@@ -1,14 +1,15 @@
 ---
 name: mindmymoney
 description: Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you. Use this when someone asks where their money goes, what they spent on something, to go through or explain bank statements, find or cancel subscriptions and recurring charges, stop paying for what they do not use, switch or claim something back, which bills are due or overdue and whether one is paid, what they own (savings, funds, loans), a household budget, or sharing a month's figures with a partner. Also for a small company's own spending and subscriptions, kept as a second set beside the household. Not for preparing a company's books for an accountant (that is Clerk.AI, https://clerkai.eu). Requires the Mind My Money app.
-source: generativereality/mindmymoney@0.1.0
+source: generativereality/mindmymoney@0.1.1
 ---
 
 # Mind My Money
 
 Mind My Money reads a person's real transactions in their own browser, names and sorts every one, shows where
-the money went, finds what recurs, and with their OK on each action cancels, switches or claims. Everything lives
-in the person's vault (a folder of Markdown files), and the app draws it.
+the money went, finds what recurs, and, as the person directs, cancels, switches or claims. AI makes mistakes, and
+every action it takes is the person's responsibility. Everything lives in the person's vault (a folder of Markdown
+files), and the app draws it.
 
 **Before anything else, follow `references/using-the-app.md`:** it finds the app and its command line (called
 `$CLI` below), starts the app, and does first run. Then come back here.
@@ -64,7 +65,8 @@ on Home."*
 ## Rules that hold from here too
 
 - **The person signs in, never you.** No passwords, no codes, nothing typed into a bank.
-- **Nothing is changed, cancelled, paid or sent without the person's yes on that one action, in the app.**
+- **Change, cancel, pay or send nothing yourself.** That is the app's round, on the person's word about that one
+  action in the app; every action is the person's responsibility.
 - **Analysis, never advice.** Say what the figures show; the choice is theirs.
 - **Their data stays with them**: the vault, and the AI provider they signed in to. Never paste their transactions
   anywhere else.
