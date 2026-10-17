@@ -28,7 +28,7 @@
     },
     {
       "name": "mytranscriber",
-      "description": "Local audio/video transcription via My Transcriber CLI. High-quality Whisper transcription on-device \u2014 no cloud. Requires the My Transcriber app installed.",
+      "description": "Turn recordings into text on this computer with My Transcriber (https://mytranscriber.app): voice memos, meetings, interviews, podcasts, lectures, dictation, any audio or video file, and finding what was said in recordings already transcribed.",
       "author": {
         "name": "generativereality"
       },
