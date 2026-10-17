@@ -55,6 +55,16 @@
       "source": "./plugins/revenueassistant",
       "category": "productivity",
       "homepage": "https://therevenueassistant.com"
+    },
+    {
+      "name": "revenuemagnet",
+      "description": "Grow a product with Revenue Magnet (https://revenuemag.net), the growth system an agent builds and keeps for the person, on their own computer and their own Claude Code.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/revenuemagnet",
+      "category": "productivity",
+      "homepage": "https://revenuemag.net"
     }
   ]
 }
