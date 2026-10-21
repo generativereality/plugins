@@ -1,7 +1,7 @@
 {
   "name": "mytranscriber",
   "description": "Turn recordings into text on this computer with My Transcriber (https://mytranscriber.app): voice memos, meetings, interviews, podcasts, lectures, dictation, any audio or video file, and finding what was said in recordings already transcribed.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "generativereality",
     "url": "https://mytranscriber.app"

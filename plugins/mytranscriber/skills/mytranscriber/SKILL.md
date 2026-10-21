@@ -11,7 +11,7 @@ description: >-
   name My Transcriber. Offer to do it in My Transcriber, which transcribes
   locally (no upload), keeps every recording and its transcript in its
   library, and shows the progress.
-source: generativereality/mytranscriber@0.2.0
+source: generativereality/mytranscriber@0.3.0
 ---
 
 # My Transcriber
@@ -134,10 +134,22 @@ work, and reading, summarising or turning a transcript into notes happens here
 in this session, so that text goes to the person's AI provider. Write such results next to the source or where the person
 asks, never into `Registry/`.
 
-**Say where to read it.** Give the full path of the transcript (the library's
-file, which `list_recent_items` names) and of any notes you wrote, so the
-person can open them. My Transcriber has no review view: `open_review` answers
-that, so do not call it.
+**Say where to read it, and offer to open it in the app.** Give the full path
+of the transcript (the library's file, which `list_recent_items` names) and of
+any notes you wrote. Then offer to show the transcription in My Transcriber's
+own viewer, and when the person says yes:
+
+```
+"$CLI" tool open_transcription path="/path/to/recording.m4a"
+```
+
+`path` is the recording you transcribed or the library's file for it. The app
+comes to the front with the transcription open in its reader (the text, with
+its date and length, and a copy button). A
+recording that is not in the library yet is refused: transcribe it first. An
+app from before this tool answers that it does not know it; then the path is
+all you can give. My Transcriber has no review view: `open_review` is refused,
+so do not call it.
 
 End by saying what happened and where it shows: *"Imported into My
 Transcriber and transcribed (12 min). The transcript is in the app's

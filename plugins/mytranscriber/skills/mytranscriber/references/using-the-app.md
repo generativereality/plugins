@@ -21,9 +21,11 @@ If it does not, the installed My Transcriber is older than this skill. Say so, a
 answering.
 
 Every app tool is `"$CLI" tool <name> key=value …` (`"$CLI" tool list` lists them, `"$CLI" tool help <name>`
-explains one). For anything with prose in it, write the arguments as one JSON object to `.tmp/args.json` with your
-Write tool, then run `"$CLI" tool <name> @.tmp/args.json`: the shell check refuses inline JSON, a heredoc of JSON
-and a `$` in double quotes.
+explains one). For anything with prose in it, write the arguments as one JSON object to `.tmp/args-<session>.json`
+with your Write tool, where `<session>` is a name of this session's own (this tab's name, or a short word you pick
+once and keep): other sessions share the vault's `.tmp/`, and a shared file is overwritten between your Write and
+your run. Then run `"$CLI" tool <name> '@.tmp/args-<session>.json'` (quoted: PowerShell reads a bare `@` as
+splatting). The shell check refuses inline JSON, a heredoc of JSON and a `$` in double quotes.
 
 ## 2. Is the app running, and where is the vault?
 
