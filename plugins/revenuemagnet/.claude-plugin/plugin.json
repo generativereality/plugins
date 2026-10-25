@@ -1,5 +1,6 @@
 {
   "name": "revenuemagnet",
+  "displayName": "Revenue Magnet",
   "description": "Build it, and they will come: \"it\" being the growth system around your product. Revenue Magnet maps everyone already around a builder's product, from their own mail, calendar and analytics, and drafts the next part to build: a page for a search, a directory listing, a post. Needs the Revenue Magnet desktop app, installed separately; when you ask for growth work, Claude Code offers to do it in the app and asks if that is OK.",
   "version": "0.1.0",
   "author": {
