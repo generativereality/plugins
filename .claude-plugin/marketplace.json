@@ -58,7 +58,7 @@
     },
     {
       "name": "revenuemagnet",
-      "description": "Grow a product with Revenue Magnet (https://revenuemag.net), the growth system an agent builds and keeps for the person, on their own computer and their own Claude Code.",
+      "description": "Build it, and they will come: \"it\" being the growth system around your product. Revenue Magnet maps everyone already around a builder's product, from their own mail, calendar and analytics, and drafts the next part to build: a page for a search, a directory listing, a post. Needs the Revenue Magnet desktop app, installed separately; when you ask for growth work, Claude Code offers to do it in the app and asks if that is OK.",
       "author": {
         "name": "generativereality"
       },

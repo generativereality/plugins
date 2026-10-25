@@ -44,7 +44,8 @@ If `app status` shows first run waiting, the app's first question is about **wha
 offer, and where it stands**. Help them answer from what this session can see: the repo it is running in (its README,
 the site it builds), a site they name, a deck in a folder. Ask also **where the team keeps its work** (a Drive,
 OneDrive, SharePoint or Dropbox folder, or a repo; their own folder if they work alone) and put that in the answer: it
-is the place every round works from.
+is the place every round works from. A place this conversation already knows needs no question: say it in the answer
+(or pass `shared=` to `create_map`), and the round uses it without asking again.
 
 ## Handing the work over
 
@@ -60,7 +61,8 @@ The round asks what it needs as cards. A draft (an article, a listing, a post, a
 person opens in the app's review window, reads, and answers: what to change, by voice or text, or that it can go.
 It is designed to wait for that answer on the exact item and to send from the person's own account; AI makes
 mistakes, and what it does under their accounts is the person's responsibility. Code changes (analytics
-events, pages, onboarding) are proposed on a branch for the person to review, never merged.
+events, pages, onboarding) are proposed on a branch for the person to review, and merged only on a yes to
+that merge.
 
 ## Say what changed and where to see it
 
