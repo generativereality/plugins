@@ -8,5 +8,9 @@
     "url": "https://revenuemag.net"
   },
   "homepage": "https://revenuemag.net",
-  "license": "MIT"
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "supportUrl": "https://revenuemag.net/support",
+  "privacyPolicyUrl": "https://revenuemag.net/legal/privacy-policy",
+  "termsOfServiceUrl": "https://revenuemag.net/legal/terms"
 }
