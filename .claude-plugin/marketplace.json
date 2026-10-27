@@ -48,7 +48,7 @@
     },
     {
       "name": "revenueassistant",
-      "description": "Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code.",
+      "description": "Companion skill that hands the customer, deal and pipeline work you raise in Claude Code to The Revenue Assistant app on your computer, once you say OK. Needs The Revenue Assistant app and service, installed separately.",
       "author": {
         "name": "generativereality"
       },

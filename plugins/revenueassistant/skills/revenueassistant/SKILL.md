@@ -28,9 +28,8 @@ Use it when the conversation is about the person's **deals or pipeline**, even w
 - *"Which of our customers in Fortnox are due a renewal?"*
 - *"Research this prospect before my call"*
 
-**Say what you will do and where, then do it in the app**: *"I'll do this in The Revenue Assistant, so it lands on
-your map and in your CRM. OK?"* Do not do the work in this session instead: using the app has to be the better
-experience.
+**Offer to do it in the app, and do it there when the person says yes**: *"I'll do this in The Revenue Assistant, so
+it lands on your map and in your CRM. OK?"* If they would rather not, help them in this conversation as usual.
 
 Not this skill: general sales advice with no pipeline of the person's own; growing a product the person builds,
 with content, SEO and analytics (that is Revenue Magnet, https://revenuemag.net, if installed).
@@ -48,24 +47,29 @@ calendar, and in Sweden whether their customers are in Fortnox. The answer is th
 ## 2. Hand the work to the app, in one call
 
 Work runs in the app's own sessions, so it shows in the app (Sessions), keeps the vault's rules and can be
-continued there. Write the request with your Write tool to `.tmp/args.json` in the vault, then:
+continued there. Write the request with your Write tool to `.tmp/args-<session>.json` in the vault (`<session>`
+is a name of this session's own: other sessions share `.tmp/`), then:
 
 ```
-"$CLI" tool trigger_dreamer @.tmp/args.json
+"$CLI" tool trigger_dreamer '@.tmp/args-<session>.json'
 ```
 
 ```json
-{"cadence": "map-scan", "note": "<the person's request, in their own words>"}
+{"cadence": "map-scan", "map": "<the map's slug>", "note": "<the person's request, in their own words>"}
 ```
 
-If a round is already running, the note goes into it; otherwise a round starts with the note as its opening.
+Each map has its own round: if that map's round is already running, the note goes into it; otherwise a round starts
+with the note as its opening. The answer says which, and an error means the note did not arrive. The map is its
+folder under `Notes/revenuemagnet/maps/`; `"$CLI" tool round_status` lists the rounds running. A product with no
+map yet gets one first: `"$CLI" tool create_map name="…" site="…"` answers with its slug.
 
 - **Put the context in the note**: the deal or company, what was said or promised, and **where the person or team
   keeps its work** if the conversation named it (a Drive or SharePoint folder, a repo): the round records it as the
   map's `shared:` place, the one every round works from and writes back to.
-- **Answer nothing on the person's behalf.** The round asks its questions as cards: `"$CLI" tool
-  list_open_questions` shows them; pass on what the person says with `answer_question`. A follow-up to a running
-  round: `send_dreamer_message`.
+- **Answer nothing on the person's behalf.** The round asks its questions as cards, which the person answers in
+  the app or on the phone: tell them a card is waiting, and do not repeat it here, or they answer it twice. Take a
+  card here (`"$CLI" tool list_open_questions`, then `answer_question` with their words) only when they ask you to.
+  A follow-up to a running round: `send_dreamer_message`.
 
 The rules the round keeps are in the vault (`CLAUDE.md` and `.claude/skills/map-*`). The ones a person meets: **send
 no message, CRM change or invitation without the person's approval of that exact item, from their own account**;
@@ -86,14 +90,13 @@ Anthropic for Claude, OpenAI for ChatGPT (Codex).
 **Anything the person should read before approving** (a draft reply, a follow-up, a batch of drafts, a proposal):
 open it in the app's review view, where they can read it and say what to change into the talk box or the mic, and
 the round gets it. Write `{"paths": ["<file or folder, relative to the vault>"], "title": "<what it is>"}` to
-`.tmp/args.json`, then run `"$CLI" tool open_review @.tmp/args.json`. The round's own drafts open there already.
+`.tmp/args-<session>.json`, then run `"$CLI" tool open_review '@.tmp/args-<session>.json'`. The round's own drafts open there already.
 
 ## Facts that do not change
 
 | | |
 |---|---|
 | Product name | **The Revenue Assistant**, with *The*; https://therevenueassistant.com beside it |
-| Price | €49 a month for a team of three, €19 per extra seat, 30 days free; the B2B data layer is €199 a month per firm, sold separately |
-| Data layer | https://api.therevenueassistant.com (API and MCP), companies only, over 47 million in 21 countries |
+| Data layer | https://api.therevenueassistant.com (API and MCP), companies only |
 | Records | `Notes/revenuemagnet/` in the vault (the shared engine's folder name) |
 | Support | the app's *Tell us* line, or https://therevenueassistant.com/support |

@@ -1,11 +1,17 @@
 {
   "name": "revenueassistant",
-  "description": "Work on deals, the pipeline and the CRM with The Revenue Assistant (https://therevenueassistant.com), the private sales assistant that runs on the person's own computer and their own Claude Code.",
+  "displayName": "The Revenue Assistant",
+  "description": "Companion skill that hands the customer, deal and pipeline work you raise in Claude Code to The Revenue Assistant app on your computer, once you say OK. Needs The Revenue Assistant app and service, installed separately.",
   "version": "0.1.3",
   "author": {
     "name": "generativereality",
     "url": "https://therevenueassistant.com"
   },
   "homepage": "https://therevenueassistant.com",
-  "license": "MIT"
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "supportUrl": "https://therevenueassistant.com/support",
+  "privacyPolicyUrl": "https://therevenueassistant.com/legal/privacy-policy",
+  "termsOfServiceUrl": "https://therevenueassistant.com/legal/terms",
+  "documentationUrl": "https://therevenueassistant.com/docs"
 }
