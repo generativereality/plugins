@@ -10,6 +10,8 @@
   "homepage": "https://revenuemag.net",
   "license": "MIT",
   "icon": "./.claude-plugin/icon.png",
+  "documentationUrl": "https://revenuemag.net/docs",
+  "repository": "https://github.com/generativereality/plugins",
   "supportUrl": "https://revenuemag.net/support",
   "privacyPolicyUrl": "https://revenuemag.net/legal/privacy-policy",
   "termsOfServiceUrl": "https://revenuemag.net/legal/terms"
