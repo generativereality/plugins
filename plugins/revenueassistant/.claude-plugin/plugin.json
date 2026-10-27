@@ -8,6 +8,7 @@
     "url": "https://therevenueassistant.com"
   },
   "homepage": "https://therevenueassistant.com",
+  "repository": "https://github.com/generativereality/plugins",
   "license": "MIT",
   "icon": "./.claude-plugin/icon.png",
   "supportUrl": "https://therevenueassistant.com/support",
