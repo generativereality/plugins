@@ -1,11 +1,16 @@
 {
   "name": "mindmymoney",
-  "description": "Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you.",
+  "displayName": "Mind My Money",
+  "description": "Ask Claude Code where your money went, what a PayPal or Klarna line was, or which subscriptions and bills to deal with, and this companion skill hands it to the Mind My Money app on your computer. Needs the Mind My Money app, installed separately.",
   "version": "0.1.1",
   "author": {
     "name": "generativereality",
     "url": "https://mindmy.money"
   },
   "homepage": "https://mindmy.money",
-  "license": "MIT"
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "supportUrl": "https://mindmy.money/support",
+  "privacyPolicyUrl": "https://mindmy.money/legal/privacy-policy",
+  "termsOfServiceUrl": "https://mindmy.money/legal/terms"
 }
