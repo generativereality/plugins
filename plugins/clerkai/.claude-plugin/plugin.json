@@ -1,11 +1,17 @@
 {
   "name": "clerkai",
-  "description": "A small business's bookkeeping prep, done in Clerk.AI (https://clerkai.eu), the app that gathers each period's statements and receipts and drafts the email to the accountant.",
+  "displayName": "Clerk.AI (clerkai.eu)",
+  "description": "Companion skill that hands the accounting prep you raise in Claude Code (closing a month, finding receipts, what to send your accountant) to the Clerk.AI (clerkai.eu) app on your computer. Needs the Clerk.AI app, installed separately.",
   "version": "0.1.0",
   "author": {
     "name": "generativereality",
     "url": "https://clerkai.eu"
   },
   "homepage": "https://clerkai.eu",
-  "license": "MIT"
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "documentationUrl": "https://clerkai.eu/docs",
+  "supportUrl": "https://clerkai.eu/support",
+  "privacyPolicyUrl": "https://clerkai.eu/legal/privacy-policy",
+  "termsOfServiceUrl": "https://clerkai.eu/legal/terms"
 }

@@ -33,8 +33,8 @@ answer.
 Everything bookkeeping goes to a period-close round, in one call:
 
 ```
-"$CLI" tool trigger_dreamer @.tmp/args.json
-# .tmp/args.json: {"cadence": "period-close", "note": "<the person's request, in their words>"}
+"$CLI" tool trigger_dreamer '@.tmp/args-<session>.json'
+# .tmp/args-<session>.json: {"cadence": "period-close", "note": "<the person's request, in their words>"}
 ```
 
 If a round is running, the note reaches it; otherwise a round starts with it.
@@ -53,13 +53,14 @@ question card by hand: the round and the app own those, and work done outside
 them cannot be shown or continued in the app.
 
 Questions a round asks are cards in the app (`"$CLI" tool list_open_questions`
-lists them). Answer one here only with the person's own words, and leave a
+lists them), and the person answers them there: point them to the card rather than
+repeating it here. Answer one here only when they ask you to, with their own words, and leave a
 sign-in card to the person: it is answered by signing in, in the app's
 browser.
 
 To show the person a file to read in the app (what Clerk.AI knows about the
 business in `Notes/bookkeeping/accountant.md`, or a period's folder), run
-`"$CLI" tool open_review @.tmp/args.json` with `{"paths": ["<path>"], "title":
+`"$CLI" tool open_review '@.tmp/args-<session>.json'` with `{"paths": ["<path>"], "title":
 "<what it is>"}`; what they say about it goes to the round. Do not use it for
 the email to the accountant: that is read, changed and sent on Home, for the
 period it belongs to.
