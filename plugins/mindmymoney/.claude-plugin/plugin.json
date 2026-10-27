@@ -8,9 +8,11 @@
     "url": "https://mindmy.money"
   },
   "homepage": "https://mindmy.money",
+  "repository": "https://github.com/generativereality/plugins",
   "license": "MIT",
   "icon": "./.claude-plugin/icon.png",
   "supportUrl": "https://mindmy.money/support",
   "privacyPolicyUrl": "https://mindmy.money/legal/privacy-policy",
-  "termsOfServiceUrl": "https://mindmy.money/legal/terms"
+  "termsOfServiceUrl": "https://mindmy.money/legal/terms",
+  "documentationUrl": "https://mindmy.money/docs"
 }
