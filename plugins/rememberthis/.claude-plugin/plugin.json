@@ -1,11 +1,18 @@
 {
   "name": "rememberthis",
-  "description": "Your own life, from your photos, voice memos and notes, with Remember This (https://rememberthis.ai).",
+  "displayName": "Remember This",
+  "description": "Ask Claude Code for a month of your life or a chapter of your life story, and the Remember This app writes it from the photos, voice memos and notes on your Mac. Ask who mattered in a year, or when you were somewhere, and Claude answers from the app's index. Companion skill: needs the Remember This app, installed separately.",
   "version": "0.14.0",
   "author": {
     "name": "generativereality",
     "url": "https://rememberthis.ai"
   },
   "homepage": "https://rememberthis.ai",
-  "license": "MIT"
+  "repository": "https://github.com/generativereality/plugins",
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "documentationUrl": "https://rememberthis.ai/docs",
+  "supportUrl": "https://rememberthis.ai/support",
+  "privacyPolicyUrl": "https://rememberthis.ai/legal/privacy-policy",
+  "termsOfServiceUrl": "https://rememberthis.ai/legal/terms"
 }

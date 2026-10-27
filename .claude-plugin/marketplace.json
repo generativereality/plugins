@@ -88,7 +88,7 @@
     },
     {
       "name": "rememberthis",
-      "description": "Your own life, from your photos, voice memos and notes, with Remember This (https://rememberthis.ai).",
+      "description": "Ask Claude Code for a month of your life or a chapter of your life story, and the Remember This app writes it from the photos, voice memos and notes on your Mac. Ask who mattered in a year, or when you were somewhere, and Claude answers from the app's index. Companion skill: needs the Remember This app, installed separately.",
       "author": {
         "name": "generativereality"
       },

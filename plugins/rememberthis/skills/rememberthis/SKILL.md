@@ -1,16 +1,17 @@
 ---
 name: rememberthis
-description: Your own life, from your photos, voice memos and notes, with Remember This (https://rememberthis.ai). Use this when the person asks about their past or their memories — "when was I in Lisbon", "find photos of my dad", "who did I spend most time with in 2019", "what did I say in that voice memo about the house", "what happened last month", "show me pictures from the cabin" — about people or places in their photos, their diary or life log, their life story or a chapter of it (the Life Book), what to remember or follow up on from their recordings, or about the Remember This app itself. Offer to do the work in Remember This even when they don't name it. Not for transcribing a single file (that is My Transcriber's skill) or for bookkeeping receipts (Clerk.AI's).
+description: The story of your life and of the people you love, kept from the photos, voice memos and notes already on your computer, with Remember This (https://rememberthis.ai). Use this when the person wants a part of their life told back to them — "what happened in my life last month", "who mattered most to me in 2019", "write the chapter about our years in Berlin", "what were the kids up to the summer we moved" — a month of their life, the people in a year or period of it, a chapter of their life story (the Life Book); also when they look something up in their past ("when was I in Lisbon", "the voice memo about the house"), or ask about the Remember This app itself. Offer to do the work in Remember This even when they don't name it. Not for transcribing a single file (that is My Transcriber's skill) or for bookkeeping receipts (Clerk.AI's).
 source: generativereality/rememberthis@0.14.0
 ---
 
 # Remember This
 
-Remember This reads the person's photo library, Apple Voice Memos and notes on their own computer,
-writes each item down as markdown (captions, transcripts, the text in photos, where and with whom),
-and keeps it in one folder, the **vault**, that an agent can search. Its sessions turn that into a
-diary, a weekly and monthly picture of their life, the people and places that matter, and in the end
-a draft of their life story (the Life Book), one chapter at a time.
+Remember This keeps the story of a person's life and of the people they love. It reads their photo
+library, Apple Voice Memos and notes on their own computer, writes each item down as markdown (captions,
+transcripts, the text in photos, where and with whom), and keeps it in one folder, the **vault**. Its
+sessions turn that into the story: a picture of each week and month, the people who mattered in each
+period of their life (their children's too), and a draft of their life story (the Life Book), one
+chapter at a time, asking back what only the person can answer.
 
 **Using the app has to be the better experience.** So questions about their past are looked up here,
 and any job that writes to the vault runs in one of the app's own sessions, where the person can
@@ -37,14 +38,16 @@ Run them from the vault folder. If `references/life-domains.md` exists, it lists
 person set up in the app (family, health, work …); use their names for those areas in your answers and
 in the notes you hand to the app.
 
-## 2. Look things up here
+## 2. Their story, and looking things up
 
-Questions about their past are answered in this session, read-only, from the index:
+A part of their life told back (a month, a year, a chapter) is written by the app's sessions (§3).
+What can be read from the index is answered here, read-only:
 
 | They ask | Use |
 |---|---|
-| a word, a topic, "the voice memo about…" | `search_captions` (captions, transcripts and photo text together), `search_transcriptions`, `search_ocr` |
+| who mattered in a year or a period, who was around the kids | `query_assets` over that span's photos and their `people`, then `get_entity` for each person (`relationship_to_user` says who is family) |
 | a person | `search_by_person`, `list_people_entities`, `get_entity` |
+| a word, a topic, "the voice memo about…" | `search_captions` (captions, transcripts and photo text together), `search_transcriptions`, `search_ocr` |
 | a place or a trip | `search_by_location`, `list_places_entities` |
 | a date range, counts, anything else | `query_assets` (one read-only SQL `SELECT` on `registry_items`; `"$CLI" tool help query_assets` lists the columns) |
 | "what's new", "what is it still working on" | `list_recent_items`, `get_pending_items`, `get_stats` |
@@ -59,18 +62,18 @@ email, a post, a public repo, a web form) unless they ask for exactly that.
 
 ## 3. Hand everything else to the app
 
-Anything that writes to the vault (a diary entry, tasks from their voice memos, a summary of a
-month, naming the people or groups in their photos, a chapter of their life story) runs in a
-Remember This session. Write `{"cadence": "<cadence>", "note": "<their request, in their words>"}`
-to `.tmp/args.json` in the vault with the Write tool and run
-`"$CLI" tool trigger_dreamer @.tmp/args.json`. If a session is already running, the note goes into it.
+Anything that writes to the vault (a month or a week of their life written up, a chapter of their
+life story, notes and follow-ups from their voice memos, naming the people or groups in their photos)
+runs in a Remember This session. Write `{"cadence": "<cadence>", "note": "<their request, in their words>"}`
+to `.tmp/args-<session>.json` in the vault with the Write tool and run
+`"$CLI" tool trigger_dreamer '@.tmp/args-<session>.json'`. If a session is already running, the note goes into it.
 
 | The job | Cadence |
 |---|---|
-| reflect on the last day or two, catch tasks and follow-ups, anything else they ask for | `narrative` |
-| look for patterns, loose ends, people they have lost touch with | `detective` |
-| the past week / the past month | `weekly` / `monthly` |
-| their life story, or one chapter of it | `biography` |
+| the past month / the past week of their life | `monthly` / `weekly` |
+| their life story, or one chapter of it (a period: the student years, the years in Berlin) | `biography` |
+| the last day or two, follow-ups from their recordings, anything else they ask for | `narrative` |
+| patterns and loose ends across the years | `detective` |
 
 Give the session their words, not your summary of them. If the conversation names where they keep
 other material (a folder of old letters, a shared family album, a journal elsewhere), put that in
@@ -83,10 +86,10 @@ changed here.
 
 ## 4. Show them the page
 
-When the person wants to read something Remember This wrote (a Life Book chapter, a month's summary, a diary
-entry), or a session you started has written one, open it in the app instead of pasting it here: write
-`{"paths": ["Notes/life/biography.md"], "title": "Your Life Book"}` to `.tmp/args.json` and run
-`"$CLI" tool open_review @.tmp/args.json` (several files, or a folder, open as a list). The app shows the
+When the person wants to read something Remember This wrote (a Life Book chapter, a month of their life),
+or a session you started has written one, open it in the app instead of pasting it here: write
+`{"paths": ["Notes/life/biography.md"], "title": "Your Life Book"}` to `.tmp/args-<session>.json` and run
+`"$CLI" tool open_review '@.tmp/args-<session>.json'` (several files, or a folder, open as a list). The app shows the
 page, redraws it when a session revises it, and has a box and a mic under it: what they say there goes to a
 Remember This session as a remark about that page.
 

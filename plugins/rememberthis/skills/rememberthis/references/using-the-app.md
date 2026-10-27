@@ -21,9 +21,11 @@ If it does not, the installed Remember This is older than this skill. Say so, as
 answering.
 
 Every app tool is `"$CLI" tool <name> key=value …` (`"$CLI" tool list` lists them, `"$CLI" tool help <name>`
-explains one). For anything with prose in it, write the arguments as one JSON object to `.tmp/args.json` with your
-Write tool, then run `"$CLI" tool <name> @.tmp/args.json`: the shell check refuses inline JSON, a heredoc of JSON
-and a `$` in double quotes.
+explains one). For anything with prose in it, write the arguments as one JSON object to `.tmp/args-<session>.json`
+with your Write tool, where `<session>` is a name of this session's own (this tab's name, or a short word you pick
+once and keep): other sessions share the vault's `.tmp/`, and a shared file is overwritten between your Write and
+your run. Then run `"$CLI" tool <name> '@.tmp/args-<session>.json'` (quoted: PowerShell reads a bare `@` as
+splatting). The shell check refuses inline JSON, a heredoc of JSON and a `$` in double quotes.
 
 ## 2. Is the app running, and where is the vault?
 
@@ -56,8 +58,10 @@ Never answer it for them. `answered` means go on.
 
 The work runs in Remember This's own sessions, so it shows in the app and keeps the vault's rules. The skill that
 sent you here names the round: write `{"cadence": "<that round>", "note": "<the person's request, in their
-own words>"}` to `.tmp/args.json` and run `"$CLI" tool trigger_dreamer @.tmp/args.json`. Questions come back
-as cards (`list_open_questions`); pass on the person's answers with `answer_question`, never your own.
+own words>"}` to `.tmp/args-<session>.json` (a name of this session's own) and run
+`"$CLI" tool trigger_dreamer '@.tmp/args-<session>.json'`. Questions come back
+as cards, which the person answers in Remember This: point them there rather than repeating a card here; take one here
+(`list_open_questions`, then `answer_question` with their words, never your own) only when they ask you to.
 
 ## 5. Where the work lives
 
