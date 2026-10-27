@@ -22,8 +22,7 @@ https://mindmy.money; the plugin installs nothing itself.
 
 ## You need
 
-- Mind My Money, for Mac or Windows: https://mindmy.money. Pay what you decide it's worth,
-  including nothing.
+- Mind My Money: https://mindmy.money
 - Claude Code
 
 ## Install

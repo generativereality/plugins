@@ -57,7 +57,7 @@ Never answer it for them. `answered` means go on.
 ## 4. Hand the work to the app
 
 The work runs in Mind My Money's own sessions, so it shows in the app, keeps the vault's rules and can be continued
-there. **Do not do it in this session instead**: using the app has to be the better experience.
+there. Ask first, and if the person would rather not use the app, help them in this conversation as usual.
 
 1. Write `{"cadence": "money-round", "note": "<the person's request, in their own words, and anything
 this conversation knows that the work needs: links, file paths, where the team keeps its work>"}` to your
