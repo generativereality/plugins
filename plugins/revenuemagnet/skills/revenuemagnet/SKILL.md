@@ -32,8 +32,7 @@ app's name:
 - *"What should I build next to bring people in?"*, *"add analytics events"*, *"a referral flow"*
 
 **Say what you will do and where, then do it in the app**: *"I'll do this in Revenue Magnet, so it lands on your map and
-in its review view. OK?"* Do not write the article, the listing or the campaign in this session instead: using the app
-has to be the better experience.
+in its review view. OK?"* If they would rather not, help them in this conversation as usual.
 
 Not this skill: a deal maker's pipeline, CRM upkeep and meetings with existing clients (that is The Revenue Assistant,
 https://therevenueassistant.com, if installed); the person's own money (Mind My Money); bookkeeping (Clerk.AI).
