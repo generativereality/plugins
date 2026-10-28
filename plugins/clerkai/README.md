@@ -38,3 +38,9 @@ https://clerkai.eu/legal/privacy-policy
 
 Made by Augmented Mind AB, Helsinki, and published in the generativereality plugin marketplace.
 This plugin's files are under the MIT licence.
+
+## Trade mark
+
+CLERK.AI is a registered trade mark of Augmented Mind AB in the European Union (EUTM 017646613)
+and the United Kingdom (UK00917646613). The MIT licence covers this plugin's files, not the name.
+This plugin is not affiliated with other companies or products that use the word "Clerk".
