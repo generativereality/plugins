@@ -13,7 +13,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/cctabs",
-      "category": "productivity",
+      "category": "development",
       "homepage": "https://cctabs.com"
     },
     {
@@ -23,7 +23,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/browser-automation",
-      "category": "productivity",
+      "category": "web-browser",
       "homepage": "https://github.com/generativereality/browser-automation"
     },
     {
@@ -43,7 +43,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/review-md",
-      "category": "productivity",
+      "category": "documentation",
       "homepage": "https://github.com/generativereality/review-md"
     },
     {
@@ -53,7 +53,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/revenueassistant",
-      "category": "productivity",
+      "category": "sales-marketing",
       "homepage": "https://therevenueassistant.com"
     },
     {
@@ -63,7 +63,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/revenuemagnet",
-      "category": "productivity",
+      "category": "sales-marketing",
       "homepage": "https://revenuemag.net"
     },
     {
@@ -73,7 +73,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/mindmymoney",
-      "category": "productivity",
+      "category": "business-finance",
       "homepage": "https://mindmy.money"
     },
     {
@@ -83,7 +83,7 @@
         "name": "generativereality"
       },
       "source": "./plugins/clerkai",
-      "category": "productivity",
+      "category": "business-finance",
       "homepage": "https://clerkai.eu"
     },
     {
