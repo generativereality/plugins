@@ -14,14 +14,19 @@ file under `~/.browser-automation/sessions/`.
 
 ## The model — read this first
 
-- **One shared headed Chrome per USER** on a uid-derived
-  `--remote-debugging-port` (`9223` for the first account on the machine) with a
-  persistent profile (`browser-automation`). Cookies, logins, and **browser
-  extensions (password managers, etc.) all persist** across runs and across
-  Claude Code restarts. The user can watch and complete interactive auth in the
-  same window.
-- **Per-target CDP, not whole-browser.** The CLI talks to a single tab's
-  `webSocketDebuggerUrl`. It never does Playwright-style "connect to the whole
+- **One shared headed Chrome per USER** with a persistent profile. Cookies,
+  logins, and **browser extensions (password managers, etc.) all persist** across
+  runs and across Claude Code restarts. The user can watch and complete
+  interactive auth in the same window.
+- **No debugging port.** Chrome runs with `--remote-debugging-pipe`, held by a
+  small broker that `launch` starts, and the CLI reaches it through
+  `~/.browser-automation/cdp.sock` (macOS, Linux) or a randomly named pipe
+  (Windows) — only this OS user can open either. A debugging port has no
+  authentication, so with one open any program on the computer could drive the
+  signed-in browser. Login contexts get a broker each. Only `BROWSER_AUTOMATION_CDP` means a port.
+- **Per-target CDP, not whole-browser.** Each command opens its own connection
+  bound to a single tab (over the socket, a CDP session the broker attaches for
+  that command and detaches after it). It never does Playwright-style "connect to the whole
   browser and enumerate every target" — so a stuck iframe/worker or a pile of
   open tabs can never wedge it (the failure that made `playwright-cli` time out).
 - **Address any tab on demand.** Every page command picks its tab three ways
@@ -84,11 +89,10 @@ file under `~/.browser-automation/sessions/`.
   attribute. Because each invocation is a fresh process, **re-snapshot after any
   action that changes the DOM** — refs from an old snapshot go stale, exactly
   like Playwright refs.
-- **Clicks/fills are JS-dispatched** (`element.click()`, native value setter +
-  `input`/`change` events). This works on background tabs, which native CDP
-  mouse events do not reliably reach in headed Chrome. Trade-off: dispatched
-  events are not `isTrusted`, so a few hard anti-bot / payment flows may reject
-  them (see Gotchas).
+- **Clicks/fills are JS-dispatched** (a real click's pointer + mouse events, then
+  `element.click()`; native value setter + `input`/`change`). This works on
+  background tabs without taking focus, and drives Radix / headless-UI controls.
+  Trade-off: not `isTrusted`, so a few anti-bot / payment flows reject them (see Gotchas).
 
 ## Setup (per machine)
 
@@ -113,8 +117,15 @@ that it keeps all three while losing the ability to give any new tab a
 **renderer** (see Gotchas, and [`references/renderer-health.md`](references/renderer-health.md)). Older CLIs printed `nothing to do.` in exactly that
 state — **if your `launch` ends without a `Renderer capacity:` line, you are on
 one of those; run `doctor`, which is the same probe.** Override the profile path
-with `BROWSER_AUTOMATION_PROFILE=...` and the CDP host with
-`BROWSER_AUTOMATION_CDP=http://localhost:PORT` if needed.
+with `BROWSER_AUTOMATION_PROFILE=...`. `BROWSER_AUTOMATION_CDP=http://localhost:PORT`
+drives a browser somebody else started on a port instead — which exposes it to
+everything on the computer, so only for a browser that holds no logins.
+
+**Moving off the port.** If this user's browser from an older CLI is still on the
+port, `launch` stops and says so: `browser-automation launch --restart` quits it
+(closing its tabs; logins are kept, and the profile moves out of Chrome's folder
+as below) and starts it on the pipe. A browser on the port with a *different*
+profile is left alone and only named.
 
 **The profile lives in `~/.browser-automation/chrome-profile`** (`browser-automation
 profile` prints it). Older CLIs kept it inside Chrome's own folder,
@@ -163,6 +174,7 @@ Page commands take a tab selector — `-s <session>` (default `$BAC_SESSION`, el
 | Adopt an open tab into a session | `browser-automation bind -s bank -m nordnet` |
 | List interactive elements (refs) | `browser-automation snapshot -m op.fi` |
 | Click by ref | `browser-automation click -m op.fi e7` |
+| Press a key on a ref (listbox, menu, cmdk list) | `browser-automation key -s app e7 Enter` |
 | Type into a field by ref | `browser-automation fill -s work e3 "value" [--submit]` |
 | Read page text (or a selector) | `browser-automation read -m op.fi ['.balance']` |
 | Evaluate JS in the tab (escape hatch) | `browser-automation eval -m op.fi 'document.title'` |
@@ -222,7 +234,7 @@ There's no `state-save`/`state-load` to manage — the profile *is* the auth sto
 The profile holds ONE login per site. For a second account beside it (two
 Cloudflare dashboards), or to keep a whole project's logins apart from the
 user's (a client's Google Workspace, AWS), open the session in a named **login
-context**: a separate Chrome with its own profile, port and window, started on
+context**: a separate Chrome with its own profile, pipe and window, started on
 demand. The user's own Chrome is not touched.
 
 ```bash
@@ -284,23 +296,27 @@ browser-automation read -s cf2                # follows the session's context �
 - **Refs go stale after any DOM change**, not just navigation. Snapshot → use
   those refs for one action → re-snapshot. "ref not found" means re-snapshot.
 - **`isTrusted` / synthetic events.** Clicks and fills are JS-dispatched by
-  default, so widgets that demand trusted events ignore them. **For clicks, pass
-  `--trusted`** — it dispatches a real CDP `Input.dispatchMouseEvent`, makes the
+  default and need no focus. **Radix and headless-UI triggers, menu items and popovers
+  work with a plain `click`** (a Radix Select option is picked by keyboard; the CLI prints
+  `(keyboard)`); for keyboard-driven lists use `key [ref] Enter` / `ArrowDown` / `Escape`.
+  Only widgets that check `isTrusted` ignore this. **For those clicks, pass `--trusted`** — it dispatches a real CDP `Input.dispatchMouseEvent`, makes the
   renderer treat the tab as focused+visible (CDP input no-ops on a backgrounded
   tab; the person's window keeps showing its own tab) and waits for the element to be actionable (stable position +
   unoccluded hit-test) before pressing. For fills, pass `--native` to drive
   character insertion through CDP `Input.insertText`, which fires real
   `beforeinput`/`input` events.
-  **Reach for `--trusted` the moment a click "succeeds" but nothing happens** —
-  the CLI prints `✔ clicked e7` on a dispatched event regardless of whether the
-  widget reacted, so a silent no-op is the signature, not an error. Canonical
-  cases: LinkedIn artdeco dropdown items, Radix dropdowns/popovers, cmdk
-  comboboxes, and **framework-state form widgets whose inputs are `readonly` with
+  `--trusted` brings the tab's renderer to the foreground, so use it only when
+  the default click "succeeds" but nothing happens. The CLI prints `✔ clicked e7`
+  on a dispatched event regardless of whether the widget reacted, so a silent
+  no-op is the signature, not an error. Canonical cases: LinkedIn artdeco dropdown
+  items, and **framework-state form widgets whose inputs are `readonly` with
   no `name`** (Viking Line's booking selectors — the visible fields are display
   shells; the real state lives in the framework, so `fill` and DOM value-setting
   do nothing at all).
-- **There is NO way to send real keystrokes, and `fill --native` is not one** — it never fires
-  `keydown`, so a combobox that filters on keystrokes stays empty. ⛔ **Do not hand-roll a
+- **There is NO way to send real (trusted) keystrokes.** `key` dispatches an untrusted
+  `keydown`/`keyup`, enough for listboxes, menus and cmdk lists, but it types nothing into a
+  text field. `fill --native` never fires `keydown`, so a combobox that filters on keystrokes
+  stays empty. ⛔ **Do not hand-roll a
   raw-CDP trusted click** — `--trusted` already waits for actionability; check
   `browser-automation click --help` before building anything. A form can also swallow a
   dispatched click and fall through to a native POST (a raw `{"message":"Not Found"}` page,
@@ -384,7 +400,7 @@ browser-automation read -s cf2                # follows the session's context �
   on the tab first, and capture the **viewport**, not `--full` (with
   `captureBeyondViewport` they composite at their pre-capture width, narrow and
   clipped). A blank region on a page with no cross-origin iframes is a real finding.
-- **Controls that ignore `click`** (Radix menus, `click` vs `--trusted`), hidden
+- **Controls that ignore `click`** (`click` vs `--trusted`), hidden
   dialogs, stalled infinite scroll, React composers and GitHub image attachments:
   **[`references/page-recipes.md`](references/page-recipes.md)**.
 - **This needs the operator's machine, awake.** The shared headed Chrome and its
@@ -469,8 +485,8 @@ code lives, how to validate with `node dist/index.js`, and the PR steps:
 - **The Chrome on the port is on a profile you did not expect** → someone worked
   around a launch failure by hand (`BROWSER_AUTOMATION_PROFILE`, a typed
   `--user-data-dir`), and that instance has few or no logins. Read the live
-  browser's profile before trusting a drive:
-  `ps -p $(lsof -ti:9223) -o command= | tr ' ' '\n' | grep user-data-dir`. The
+  browser's profile before trusting a drive: the `profile` field of
+  `~/.browser-automation/broker.json` (a context's is in `contexts/<name>/`). The
   shared profile is `~/.browser-automation/chrome-profile`. ⚠️ Do not just kill it;
   it may be the operator's live browser. Ask, then `launch`.
 - **Chrome was restarted** → nothing to do; the next `goto` recreates the
