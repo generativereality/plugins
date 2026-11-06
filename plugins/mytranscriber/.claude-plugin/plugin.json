@@ -1,11 +1,18 @@
 {
   "name": "mytranscriber",
-  "description": "Turn recordings into text on this computer with My Transcriber (https://mytranscriber.app): voice memos, meetings, interviews, podcasts, lectures, dictation, any audio or video file, and finding what was said in recordings already transcribed.",
+  "displayName": "My Transcriber",
+  "description": "Skill that transcribes recordings in the My Transcriber app on your computer: a file you hand over, your latest voice memo, or a search through what was said in recordings already transcribed. Needs the My Transcriber app, installed separately.",
   "version": "0.3.0",
   "author": {
     "name": "generativereality",
     "url": "https://mytranscriber.app"
   },
   "homepage": "https://mytranscriber.app",
-  "license": "MIT"
+  "repository": "https://github.com/generativereality/plugins",
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "supportUrl": "https://mytranscriber.app/contact",
+  "privacyPolicyUrl": "https://mytranscriber.app/legal/privacy-policy",
+  "termsOfServiceUrl": "https://mytranscriber.app/legal/terms",
+  "documentationUrl": "https://mytranscriber.app/docs"
 }

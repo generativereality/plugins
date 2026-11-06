@@ -28,7 +28,7 @@
     },
     {
       "name": "mytranscriber",
-      "description": "Turn recordings into text on this computer with My Transcriber (https://mytranscriber.app): voice memos, meetings, interviews, podcasts, lectures, dictation, any audio or video file, and finding what was said in recordings already transcribed.",
+      "description": "Skill that transcribes recordings in the My Transcriber app on your computer: a file you hand over, your latest voice memo, or a search through what was said in recordings already transcribed. Needs the My Transcriber app, installed separately.",
       "author": {
         "name": "generativereality"
       },
