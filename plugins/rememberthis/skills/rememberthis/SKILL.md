@@ -1,7 +1,6 @@
 ---
 name: rememberthis
 description: The story of your life and of the people you love, kept from the photos, voice memos and notes already on your computer, with Remember This (https://rememberthis.ai). Use this when the person wants a part of their life told back to them — "what happened in my life last month", "who mattered most to me in 2019", "write the chapter about our years in Berlin", "what were the kids up to the summer we moved" — a month of their life, the people in a year or period of it, a chapter of their life story (the Life Book); also when they look something up in their past ("when was I in Lisbon", "the voice memo about the house"), or ask about the Remember This app itself. Offer to do the work in Remember This even when they don't name it. Not for transcribing a single file (that is My Transcriber's skill) or for bookkeeping receipts (Clerk.AI's).
-source: generativereality/rememberthis@0.14.0
 ---
 
 # Remember This
