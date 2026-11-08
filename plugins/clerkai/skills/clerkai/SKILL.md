@@ -1,7 +1,6 @@
 ---
 name: clerkai
 description: A small business's bookkeeping prep, done in Clerk.AI (https://clerkai.eu), the app that gathers each period's statements and receipts and drafts the email to the accountant. Use this when someone asks to close a month or quarter for their company, get their books or bookkeeping done, collect bank statements, find or chase receipts and invoices (in mail, supplier portals, the photo library), what is missing for a period, what to send their accountant or VAT person, or to file a late invoice into a closed period. Not for household spending, subscriptions or a personal budget (that is Mind My Money, https://mindmy.money). Requires the Clerk.AI app.
-source: generativereality/clerkai@0.1.0
 ---
 
 # Clerk.AI
