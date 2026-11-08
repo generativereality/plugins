@@ -1,7 +1,6 @@
 ---
 name: mindmymoney
 description: Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you. Use this when someone asks where their money goes, what they spent on something, to go through or explain bank statements, find or cancel subscriptions and recurring charges, stop paying for what they do not use, switch or claim something back, which bills are due or overdue and whether one is paid, what they own (savings, funds, loans), a household budget, or sharing a month's figures with a partner. Also for a small company's own spending and subscriptions, kept as a second set beside the household. Not for preparing a company's books for an accountant (that is Clerk.AI, https://clerkai.eu). Requires the Mind My Money app.
-source: generativereality/mindmymoney@0.1.1
 ---
 
 # Mind My Money
