@@ -1,0 +1,11 @@
+{
+  "name": "content-studio",
+  "description": "Make content well, in any medium: the production process (brief, variations, one best version for a pick, making it, checks, learning) plus craft and tool references for copy, voice, channels, search, stills, generated images and video, editing, audio and real people's photos.",
+  "version": "0.1.0",
+  "author": {
+    "name": "generativereality"
+  },
+  "repository": "https://github.com/generativereality/content-studio",
+  "homepage": "https://github.com/generativereality/content-studio",
+  "license": "MIT"
+}
