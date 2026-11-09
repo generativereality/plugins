@@ -45,6 +45,10 @@ feedback, never votes.
 sentence says what it does, for whom, and how it differs from the alternative, in the directory's own
 fields and limits.
 
+**Building in public** (progress posts on any channel). Share a decision, a mistake or a lesson, each
+tied to something concrete that happened. A dump of metrics with no lesson reads as a status report and
+invites "so what?"; a number belongs only when it is the lesson.
+
 **A blog post.** Something a stranger can use even if they never try the product: a lesson, a method,
 a mistake and what fixed it. The product comes in as the way the author did it. Plan the pictures with
 the words (`copy.md` §5). For search, read `search.md`. Before it goes: every link opens, the title
@@ -128,6 +132,8 @@ the project has, not here.
 | Open Graph / social preview | 1200 × 630 | |
 | Product Hunt gallery | 1270 × 760 | the first image must work alone |
 | Video for chat apps (WhatsApp) | H.264 720p, at most about 15.5 MB | `+faststart` |
+| Video for a TV | landscape 1080p HEVC | from the same edit as the portrait cut; pan across faces, never letterbox |
+| Video for a digital photo frame | silent, captioned, 30 s or less | frames play without sound |
 | Short-form clip length | 15 to 45 s | the payoff before 80% of the runtime |
 
 ## Never

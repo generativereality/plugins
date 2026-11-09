@@ -51,8 +51,11 @@ friends (a trip, a month, a child's year, a tribute).
 ## Read every trail before asking
 
 Before asking the person anything, read everything available (tags, notes, messages, the calendar,
-memos, the work log) and say what you read. Then look for gaps: lay out each day's photos by hour,
-mark waking-hours gaps of two hours or more, and mark which are explained. **Ask one question**, about
+memos, the work log) and say what you read. Then plan the story by day and place before choosing
+photos; for a trip that is the way there, each day, and the way back, with the days getting most of
+the time and the journey about a quarter. Look for the gaps as you plan: lay out each day's photos
+by hour, mark nights and waking-hours gaps of two hours or more, and mark which are explained. An
+unexplained gap is told with a card or a scene, or asked about, never skipped without notice. **Ask one question**, about
 the gap that matters most, neutrally (*"what was happening on Sunday afternoon?"*, not *"what was so
 funny?"*). Fourteen questions is too many. Say which source could have answered it, had it been
 connected.

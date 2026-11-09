@@ -35,6 +35,9 @@ needs longer than its shot's seconds is a warning to fix, not a render to ship.
 ## Cut craft
 
 - **Open on the most specific moment,** never a title card.
+- **A real person's recorded voice sets the order** (a memo, an interview, a founder talking): edit
+  to the order of the telling, not to the timeline, and use the word timestamps to put each shot on
+  the word that names it.
 - **Cut on the words.** Hard cuts on the narrator's or speaker's words, using word timestamps.
 - **Punch in** toward the face or the subject (1.04 to 1.18).
 - **Real sound from real clips:** the loudest 2.5 s window of a clip, one to three times a film, ducked
@@ -112,8 +115,7 @@ real-time speed. Tone-map to SDR BT.709 first (`avconvert --preset Preset1920x10
 
 ## Encode and verify
 
-- Master: x264 CRF 18 at 1080p. Chat copy: H.264 720p at most about 15.5 MB. HEVC 1080p is about 10 to 16 MB.
-- Always `-movflags +faststart`, or a browser downloads the whole file before playing a frame. A `-c
+- Master: x264 CRF 18 at 1080p. Chat copy: H.264 720p at most about 15.5 MB. HEVC 1080p is about 10 to 16 MB.- Always `-movflags +faststart`, or a browser downloads the whole file before playing a frame. A `-c
   copy` concat doesn't inherit it, so name it again, and check the atom order (`moov` before `mdat`)
   rather than trusting the flag was passed. Ask what each intermediate is for: a clean master that
   existed only as a pre-burn concat had no faststart and no home.

@@ -16,6 +16,9 @@ below.
 
 ## Scripts in this skill
 
+The `.sh` scripts need bash: on Windows, run them from Git Bash (which Claude Code on Windows uses).
+`spend.mjs` needs only Node.
+
 | Script | What it does |
 |---|---|
 | `scripts/voice-sweep.sh <file>` | the mechanical machine-prose sweep: em dashes against paragraphs, short fragments, banned words, negative-parallel shapes, drumbeat lines. Exit 0 always; read the hits |
