@@ -2,7 +2,7 @@
   "name": "mytranscriber",
   "displayName": "My Transcriber",
   "description": "Skill that transcribes recordings in the My Transcriber app on your computer: a file you hand over, your latest voice memo, or a search through what was said in recordings already transcribed. Needs the My Transcriber app, installed separately.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": {
     "name": "generativereality",
     "url": "https://mytranscriber.app"

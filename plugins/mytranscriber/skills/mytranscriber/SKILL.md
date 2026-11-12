@@ -157,3 +157,12 @@ Transcribe tab, and saved to …/recording.transcript.md."*
 If something fails in a way that looks like the app's fault, offer to send a
 problem report: `"$CLI" tool preview_bug_report`, show it, and send it with
 `submit_bug_report` only after the person says yes.
+
+## 8. When the person would rather say it
+
+My Transcriber 0.7 can take a spoken answer into this session:
+`"$CLI" listen --prompt "<your question>"` opens a small recording panel on
+the person's computer, and when they press Done the command prints what they
+said. Run it in the background and keep working. The plugin's
+`/mytranscriber:listen` skill has the details: when to offer it, the options,
+and what each exit code means.
