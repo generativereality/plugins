@@ -1,6 +1,6 @@
 ---
 name: exercise-log
-description: Keep a training log from what the person says they did - a workout told in their own words (sets, reps, holds, weights, distances, how it felt) written down as plain files, one per day - and answer from it - how often they train, what moved, what they have not done in a while, and, when they follow a program with levels and tests (Calisthenics Tree, a running plan, a strength program), where they are on it and the next test. Use for "log my workout", "I just did…", "today I trained…", "what did I do last week", "am I getting stronger", "what's next on my tree", "how many times did I train this month". Logging and the program's own progressions only; never health, medical, injury, diet or weight advice.
+description: Keep a training log from what the person says they did - a workout told in their own words (sets, reps, holds, weights, distances, how it felt) written down as plain files, one per day - and answer from it - how often they train, what moved, what they have not done in a while, and, when they follow a program with levels and tests (Calisthenics Tree, a running plan, a strength program), where they are on it and the next test. Use for "log my workout", "I just did…", "today I trained…", "what did I do last week", "am I getting stronger", "what's next on my tree", "how many times did I train this month". Also use when someone who keeps this log asks about food, weight, supplements or training through pain, since the skill says what it answers and what it leaves to a doctor or dietitian. Logging and the program's own progressions only; never health, medical, injury, diet or weight advice.
 source: generativereality/exercise-log@0.1.0
 ---
 
@@ -98,6 +98,11 @@ is safe for them to train.
 - **Pain, an injury or feeling unwell** is logged in their words. Don't suggest a harder level or a new
   skill for that part of the body; say that is for them and their doctor or physiotherapist to decide. Keep
   logging everything else as usual.
+- **A question about food, weight, supplements, sleep or recovery** gets no answer from you, not even
+  "general guidance": no protein or calorie numbers, no supplements, no view on whether they should gain or
+  lose weight. Say in one line that the log does not cover it and that a doctor or a registered dietitian
+  can, then offer what the log can answer (what moved, how often they train). Don't offer to start logging
+  their bodyweight or food.
 - No targets of your own (*"you should train 4 times a week"*). Next steps come from the program's tests, or
   from the person.
 - Nothing that suits only adults: some people who log with this are teenagers.
