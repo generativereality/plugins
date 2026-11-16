@@ -21,6 +21,7 @@ Claude Code plugin marketplace for [generativereality](https://github.com/genera
 | [mindmymoney](https://mindmy.money) | Your own money, worked on in Mind My Money (https://mindmy.money), the app that goes through your bank statements for you. | `/plugin install mindmymoney@generativereality` |
 | [clerkai](https://clerkai.eu) | A small business's bookkeeping prep, done in Clerk.AI (https://clerkai.eu), the app that gathers each period's statements and receipts and drafts the email to the accountant. | `/plugin install clerkai@generativereality` |
 | [rememberthis](https://rememberthis.ai) | Your own life, from your photos, voice memos and notes, with Remember This (https://rememberthis.ai). | `/plugin install rememberthis@generativereality` |
+| [exercise-log](plugins/exercise-log) | Keep a training log from what you say you did, and the next test on a program with levels such as Calisthenics Tree. Never health advice. | `/plugin install exercise-log@generativereality` |
 
 ## Troubleshooting
 
