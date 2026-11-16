@@ -38,7 +38,7 @@
     },
     {
       "name": "review-md",
-      "description": "Markdown \u2192 one self-contained styled HTML file (and a sane PDF). Build-time mermaid\u2192inline-SVG, glyph callouts, footnote-integrity checking, dark mode, print stylesheet, doc packs, and an --artifact mode for Claude Artifacts.",
+      "description": "Markdown → one self-contained styled HTML file (and a sane PDF). Build-time mermaid→inline-SVG, glyph callouts, footnote-integrity checking, dark mode, print stylesheet, doc packs, and an --artifact mode for Claude Artifacts.",
       "author": {
         "name": "generativereality"
       },
@@ -105,6 +105,16 @@
       "source": "./plugins/content-studio",
       "category": "productivity",
       "homepage": "https://github.com/generativereality/content-studio"
+    },
+    {
+      "name": "exercise-log",
+      "description": "Keep a training log from what you say you did, one plain file per day, and see how often you train, what moved, and the next test on a program with levels such as Calisthenics Tree. Never health advice.",
+      "author": {
+        "name": "generativereality"
+      },
+      "source": "./plugins/exercise-log",
+      "category": "productivity",
+      "homepage": "https://github.com/generativereality/plugins/tree/main/plugins/exercise-log"
     }
   ]
 }

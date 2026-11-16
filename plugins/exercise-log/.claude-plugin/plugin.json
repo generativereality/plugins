@@ -1,0 +1,12 @@
+{
+  "name": "exercise-log",
+  "displayName": "Exercise log",
+  "description": "Skill that keeps a training log from what you say you did, one plain file per day, and answers from it: how often you train, what moved, and, for a program with levels and tests such as Calisthenics Tree, where you are and the next test. Logging and the program's own progressions only, never health advice.",
+  "version": "0.1.0",
+  "author": {
+    "name": "generativereality"
+  },
+  "homepage": "https://github.com/generativereality/plugins/tree/main/plugins/exercise-log",
+  "repository": "https://github.com/generativereality/plugins",
+  "license": "MIT"
+}
