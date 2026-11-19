@@ -36,7 +36,12 @@ product.
 
 ## Reviewing generated media: board, shoot, review
 
-- **Board before shoot.** No paid clip before the board is approved (`generation.md`).
+- **Board before shoot.** No paid clip before the board is approved (`generation.md`). For any video,
+  the board is the storyboard as a contact sheet: one frame per beat, with its line and its role under
+  it, so the person can approve the film before it is built (`video.md` §The process, step 5).
+- **Notes on a timestamp.** The review page for a finished cut puts each note beside the moment it
+  is about (`0:07`, a still of that frame, the note), and invites the person's notes the same way. "The
+  middle drags" gets fixed faster as "0:12 to 0:18 drags".
 - **Re-render the review after every shoot**, including a small one, before reporting. A take nobody
   has watched isn't a deliverable.
 - **One review doc for the production, not one per round.** Retire superseded material out of it and

@@ -64,6 +64,11 @@ did 3 to 5 times better than their author's usual. Note their hook form, length,
 first second or line does, then borrow the **form**, never the content (`references/copy.md` §study).
 Write down three to five of them with links. That is the evidence for the angles you choose.
 
+**The person's own saved examples come first.** When they keep an index of what they saved or admired
+(a saves or swipe file, a saved-reels or bookmarks index, a folder of examples, a skill that reads one),
+read it before anything else, and cite three of those pieces on the gallery with what each one does that
+yours borrows. What they chose to keep is a better guide to what they mean than any niche study.
+
 ### 3. Variations, then choose the best yourself
 
 Make many cheap variations before making anything well: ten to twenty hooks or titles, three to five
@@ -82,6 +87,11 @@ review page they can open where they are, which is often a phone (`references/re
 is labelled with what it is, what it cost and how long it took, and comparable things sit side by side.
 Never ask them to assemble a combination of numbered parts ("T4 + body B + image 2"). An answer
 should take one tap or one sentence.
+
+**For video, the pick comes earlier:** the person approves the idea, then the script, then the
+storyboard as a contact sheet with one frame per beat, before anything is built or paid for
+(`references/video.md` §The process). The finished cut is then shown once, on a page where each note
+sits on a timestamp.
 
 The person's part is taste, true stories and opinions, never forms. Every no teaches: write the reason
 down (step 7).

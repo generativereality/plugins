@@ -10,8 +10,14 @@ listen before a voice or a bed becomes a default; a choice made on numbers alone
   memories reads as creepy, and it is easily in the wrong language. The person's own recorded words are
   the voice. Otherwise use on-screen text, or ask them to record a 20 s line. A narrator is a style
   someone chooses on purpose (a mock documentary, for fun).
-- **For product, teaching and promo pieces:** a voice-over is fine and often carries the cut. The
-  person's own voice beats any synthetic one.
+- **For product, teaching and promo pieces:** a voice-over is fine and often carries the cut. In order:
+  the person's own recorded voice; a licensed narrator (§Engines); or a clone of the person's own voice,
+  when they consent to it (§Cloning a voice), labelled as a clone in the piece. Cloning is allowed with
+  that consent, not ruled out; what is ruled out is anyone else's voice.
+- **"Animated" does not mean "no narration".** A request for animation, motion graphics or "no talking
+  head" in a teaching or brand piece asks how it looks, not whether it speaks. A teaching reel without a
+  voice is a post typed out in motion (`video.md`, §Short educational reel). Leave the voice out only when
+  the person says so.
 
 ## Engines (as of Nov 2026)
 
