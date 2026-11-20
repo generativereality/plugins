@@ -26,21 +26,21 @@ uses. Tools named for Clerk.AI, Mind My Money or Revenue Magnet (`period_close_*
 | Tool | What it does |
 |---|---|
 | `open_review` ● | show Markdown files in the app for the person to read and talk about (`paths`, `title`) |
-| `reveal_in_photos` ● | open a photo in Apple Photos for the person |
-| `attach_photo`, `attach_photos` ● | put a photo in front of you (save tokens: only the ones the question needs) |
-| `export_asset` | write a photo's original file to disk (starts the app if it must) |
-| `rescan_photos` ● | look at the photo library now instead of at the next sweep |
+| `reveal_in_photos` ● | open a photo in Apple Photos for the person (Mac only) |
+| `attach_photo`, `attach_photos` ● | put a photo in front of you (save tokens: only the ones the question needs). Mac only: on Windows, `export_asset` and read the file |
+| `export_asset` | write a photo's original file to disk (starts the app if it must); on Windows, the way to see a photo |
+| `rescan_photos` ● | look at the Photos library now instead of at the next sweep (Mac; on Windows new files in the chosen folders are picked up within a minute) |
 
 ## Changing what the app knows (only what the person states)
 | Tool | What it does |
 |---|---|
-| `update_entity` | a person or place's `relationship_to_user`, `is_me`, `aliases`, `groups` |
+| `update_entity` | a person or place's `relationship_to_user`, `is_me`, `aliases`, `groups` (people exist on a Mac only, from Apple Photos) |
 | `update_entity_notes` | the notes on a person or place |
 
 ## Sessions and questions
 | Tool | What it does |
 |---|---|
-| `trigger_dreamer` ● | hand a job to a session: `cadence` (`narrative`, `detective`, `weekly`, `monthly`, `biography`) and `note` (the request); a running session gets the note |
+| `trigger_dreamer` ● | hand a job to a session: `cadence` (`narrative`, `detective`, `weekly`, `monthly`, `biography`), `period` (one piece of Your life: `2026-10`, `2026`, `2020s`, `2026-10-11` …) and `note` (the request); a running session gets the note |
 | `send_dreamer_message` ● | a follow-up for a running session |
 | `list_open_questions` | the question cards waiting for the person |
 | `answer_question`, `dismiss_question` | answer or drop a card, only with the person's own words |

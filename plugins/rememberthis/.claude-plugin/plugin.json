@@ -1,8 +1,8 @@
 {
   "name": "rememberthis",
   "displayName": "Remember This",
-  "description": "Ask Claude Code for a month of your life or a chapter of your life story, and the Remember This app writes it from the photos, voice memos and notes on your Mac. Ask who mattered in a year, or when you were somewhere, and Claude answers from the app's index. Companion skill: needs the Remember This app, installed separately.",
-  "version": "0.14.0",
+  "description": "Ask Claude Code for a month of your life or a chapter of your life story, and the Remember This app writes it from the photos, voice memos and notes already on your computer. Ask who mattered in a year, or when you were somewhere, and Claude answers from the app's index. Companion skill: needs the Remember This app for Mac or Windows, installed separately.",
+  "version": "0.15.0",
   "author": {
     "name": "generativereality",
     "url": "https://rememberthis.ai"

@@ -1,6 +1,6 @@
 # Remember This
 
-Your life told back to you, from the photos, voice memos and notes already on your Mac. The
+Your life told back to you, from the photos, voice memos and notes already on your computer. The
 Remember This app keeps the story of your life and of the people you love; this companion skill lets
 Claude Code work with it when you have the app installed.
 
@@ -25,9 +25,9 @@ To do this, Claude runs the app's own command line on your computer. It uses it 
 - pass on your answer to the app's opening question on first run
 - look things up in the app's index
 - hand over your requests, and your answers to the app's questions
-- show Claude a photo a question needs, or open it in Apple Photos for you
+- show Claude a photo a question needs, or on a Mac open it in Apple Photos for you
 - save a small correction or a note about a person or place that you state outright
-- open a page the app wrote, such as a month or a Life Book chapter, in the app for you to read
+- open a page the app wrote, such as a month of your life, in the app for you to read
 
 Beyond first run, it does no work until you have answered the app's consent question. If you hit a
 problem with the app, Claude can have the app send the Remember This team a bug report (what you
@@ -37,7 +37,7 @@ itself.
 
 ## You need
 
-- A Mac with the Remember This app: https://rememberthis.ai
+- A Mac or a Windows PC with the Remember This app: https://rememberthis.ai
 - Claude Code
 
 ## Install

@@ -7,20 +7,21 @@ Remember This/
 ├── CLAUDE.md                     the person's own instructions (theirs; read it, never rewrite it)
 ├── Media/                        drop folder: files put here are processed
 ├── Registry/<identity>/          one folder per identity (a person or a group); app-managed
-│   ├── cloud/icloud/photos/YYYY/MM/DD/   one .md per photo or video
-│   ├── cloud/icloud/voice/YYYY/          one .md per voice memo, transcript in the body
+│   ├── cloud/icloud/photos/YYYY/MM/DD/   one .md per photo or video (Mac)
+│   ├── cloud/icloud/voice/YYYY/          one .md per voice memo, transcript in the body (Mac)
+│   ├── …                                 on Windows, the same per folder the person chose (Pictures, Sound recordings)
 │   ├── people/<slug>.md          people, from Apple Photos face clusters
 │   ├── places/<slug>.md          places, from photo GPS
 │   ├── groups/<slug>.md          people who often appear together
 │   ├── questions/<slug>.md       question cards the app shows
 │   ├── eras/ narratives/         drafts written by sessions
 └── Notes/
-    ├── life/days|weeks|months|years/   rollups the app writes on a schedule
-    ├── life/eras.md, life/biography.md the Life Book drafts
+    ├── life/days|weeks|months|years/   the pieces of Your life (a month: months/YYYY/MM.md)
+    ├── life/events/YYYY/               trips, weekends and other spans inside a month
+    ├── life/eras.md, life/biography.md the chapters of their life, and the life story
+    ├── life/clues/YYYY/                what the person told the app about a stretch of their life
     ├── life/people/                    person notes the person keeps
-    ├── diary/                          diary entries
-    ├── todos/inbox.md                  tasks caught from voice memos
-    └── orientation-board.md            what matters right now
+    └── diary/                          diary entries
 ```
 
 ## Rules that keep the app working
