@@ -61,7 +61,7 @@ What can be read from the index is answered here, read-only:
 | a place or a trip | `search_by_location`, `list_places_entities` |
 | a date range, counts, anything else | `query_assets` (one read-only SQL `SELECT` on `registry_items`; `"$CLI" tool help query_assets` lists the columns) |
 | "what's new", "what is it still working on" | `list_recent_items`, `get_pending_items`, `get_stats` |
-| a photo they want to see | on a Mac, `reveal_in_photos` opens it in Photos for them and `attach_photo` puts it in front of you; on Windows, `export_asset` writes its original file to disk: read that file to see it, or open it for them with `Start-Process '<path>'` |
+| a photo they want to see | `attach_photo` puts it in front of you; `reveal_in_photos` shows it to them (in Photos on a Mac, selected in File Explorer on Windows). If the Windows app answers that these are unsupported (an older app), `export_asset` writes its original file to disk: read that file to see it, or open it for them with `Start-Process '<path>'` |
 
 Answer with dates and places, and say how sure you are: a caption is a model's guess, a face name
 comes from Apple Photos on a Mac (Windows has no face names: there the people of a stretch are the ones its written pieces name, the `people:` line of `Notes/life/months/YYYY/MM.md`), a place from the photo's GPS. Point at the file the answer came from.
@@ -95,7 +95,7 @@ the note. The session asks its questions on cards in the app and on their phone.
 
 Small corrections the person states outright are the one thing done here: *"Anna is my sister"* →
 `"$CLI" tool update_entity entity_type=people slug=anna field=relationship_to_user value=Family`;
-on Windows there are no person files to correct, so hand what they said to a session (`narrative`, their words in the note); notes about a person or place → `update_entity_notes`. Names come from Apple Photos and
+the same on Windows, where it keeps who someone is even with no person file; every piece the app writes after that uses it. If an older Windows app answers that the person file is not found, hand what they said to a session (`narrative`, their words in the note). Notes about a person or place → `update_entity_notes`. Names come from Apple Photos and
 cannot be changed here.
 
 ## 4. Show them the page
